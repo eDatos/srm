@@ -69,6 +69,7 @@ public class KafkaInitializeTopic implements ApplicationListener<ContextRefreshe
         topics.add(createTopic("CODELIST_PUBLICATIONS")); // TODO EDATOS-3433: create a common metadata property for the topic value
         topics.add(createTopic("CONCEPT_SCHEME_PUBLICATIONS"));
         topics.add(createTopic("CATEGORY_SCHEME_PUBLICATIONS"));
+        topics.add(createTopic("DATA_STRUCTURE_DEFINITION_PUBLICATIONS"));
         return topics;
     }
 

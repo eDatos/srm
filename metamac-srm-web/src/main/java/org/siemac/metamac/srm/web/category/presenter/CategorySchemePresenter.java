@@ -329,7 +329,6 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             @Override
             public void onWaitSuccess(ReSendCategorySchemeStreamMessageResult result) {
                 retrieveCategorySchemeByUrn(urn);
-                getView().setCategoryScheme(result.getCategorySchemeMetamacDto());
 
                 if (result.getNotificationException() != null) {
                     ShowMessageEvent.fireWarningMessageWithError(CategorySchemePresenter.this, getMessages().lifeCycleReSendStreamMessageError(), result.getNotificationException());

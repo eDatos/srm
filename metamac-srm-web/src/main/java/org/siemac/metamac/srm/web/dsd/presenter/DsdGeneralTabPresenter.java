@@ -37,26 +37,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
-import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
-import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
-import org.siemac.metamac.srm.web.shared.dsd.CopyDsdAction;
-import org.siemac.metamac.srm.web.shared.dsd.CopyDsdResult;
-import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionAction;
-import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionResult;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsResult;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdDimensionsAndCandidateVisualisationsAction;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdDimensionsAndCandidateVisualisationsResult;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
-import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
-import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
-import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
-import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusResult;
-import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
-import org.siemac.metamac.srm.web.shared.dsd.VersionDsdResult;
+import org.siemac.metamac.srm.web.shared.dsd.*;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
@@ -254,6 +235,27 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(CopyDsdResult result) {
                 fireSuccessMessage(getMessages().maintainableArtefactCopied());
+            }
+        });
+    }
+
+    //
+    // DSD STREAM MESSAGES
+    //
+
+    @Override
+    public void reSendStreamMessageDsd(final String urn) {
+        dispatcher.execute(new ReSendDsdStreamMessageAction(urn), new WaitingAsyncCallbackHandlingError<ReSendDsdStreamMessageResult>(this) {
+
+            @Override
+            public void onWaitSuccess(ReSendDsdStreamMessageResult result) {
+                retrieveCompleteDsd(urn);
+
+                if (result.getNotificationException() != null) {
+                    ShowMessageEvent.fireWarningMessageWithError(DsdGeneralTabPresenter.this, getMessages().lifeCycleReSendStreamMessageError(), result.getNotificationException());
+                } else {
+                    ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, getMessages().lifeCycleReSendStreamMessagePublished());
+                }
             }
         });
     }

@@ -387,6 +387,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public SendStreamMessageResult resendDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionSecurityUtils.canResendDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
+
+        // Send data structure definitions
+        SendStreamMessageResult sendStreamMessageResult = getDataStructureDefinitionMetamacService().resendDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
+
+        // Return
+        return sendStreamMessageResult;
+    }
+
+    @Override
     public TaskInfo copyDataStructureDefinition(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         DataStructureDefinitionSecurityUtils.canCopyDataStructureDefinition(ctx);

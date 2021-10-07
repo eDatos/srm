@@ -151,7 +151,16 @@ Application SrmFacadeCore {
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
 	    	@DataStructureDefinitionMetamacDto publishDataStructureDefinitionExternally(String urn) throws MetamacException;
-    		
+
+	    	"
+	    	 Resend a data structure definition
+	    	 @param ctx
+             @param urn Urn of DataStructureDefinition
+             @return
+             @throws org.siemac.metamac.core.common.exception.MetamacException
+	    	"
+            org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult resendDataStructureDefinition(String urn) throws MetamacException;
+
     		"
     		 Copies a codelist version, creating a new codelist
      		 @param ctx

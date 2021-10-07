@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisa
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
 import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
@@ -32,6 +33,7 @@ import org.siemac.metamac.srm.web.dsd.widgets.DsdDimensionCodesVisualisationItem
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.dsd.widgets.ShowDecimalsPrecisionItem;
+import org.siemac.metamac.srm.web.shared.CommonSharedUtils;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
@@ -278,6 +280,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 copyDsdAskingCode(dataStructureDefinitionMetamacDto.getUrn());
             }
         });
+        mainFormLayout.getLifeCycleReSendStreamMessage().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().reSendStreamMessageDsd(dataStructureDefinitionMetamacDto.getUrn());
+            }
+        });
     }
 
     /**
@@ -294,7 +303,10 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewTextItem staticUrnItem = new ViewTextItem(DataStructureDefinitionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem staticUrnProviderItem = new ViewTextItem(DataStructureDefinitionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem staticVersion = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersForm.setFields(staticIdLogic, staticNameItem, staticUriItem, staticUrnItem, staticUrnProviderItem, staticVersion);
+        ViewTextItem publicationStreamStatus = new ViewTextItem(DataStructureDefinitionDS.PUBLICATION_STREAM_STATUS, getConstants().lifeCycleStructuralResourceStreamMsgStatus());
+        publicationStreamStatus.setWidth(20);
+
+        identifiersForm.setFields(staticIdLogic, staticNameItem, staticUriItem, staticUrnItem, staticUrnProviderItem, staticVersion, publicationStreamStatus);
 
         // Content Descriptors Form
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -523,6 +535,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         identifiersForm.setValue(DataStructureDefinitionDS.URN, dsd.getUrn());
         identifiersForm.setValue(DataStructureDefinitionDS.URN_PROVIDER, dsd.getUrnProvider());
         identifiersForm.setValue(DataStructureDefinitionDS.VERSION_LOGIC, dsd.getVersionLogic());
+        identifiersForm.getItem(DataStructureDefinitionDS.PUBLICATION_STREAM_STATUS)
+                .setIcons(StreamMessageStatusEnum.PENDING.equals(dsd.getStreamMessageStatus()) ? null : CommonSharedUtils.getPublicationStreamStatusIcon(dsd.getStreamMessageStatus()));
 
         // Content Descriptors form
         contentDescriptorsForm.setValue(DataStructureDefinitionDS.DESCRIPTION, dsd.getDescription());

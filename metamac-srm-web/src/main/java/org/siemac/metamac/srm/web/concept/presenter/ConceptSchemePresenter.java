@@ -340,7 +340,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(ReSendConceptSchemeStreamMessageResult result) {
                 retrieveConceptSchemeByUrn(urn);
-                getView().setConceptScheme(result.getConceptSchemeMetamacDto());
 
                 if (result.getNotificationException() != null) {
                     ShowMessageEvent.fireWarningMessageWithError(ConceptSchemePresenter.this, getMessages().lifeCycleReSendStreamMessageError(), result.getNotificationException());
