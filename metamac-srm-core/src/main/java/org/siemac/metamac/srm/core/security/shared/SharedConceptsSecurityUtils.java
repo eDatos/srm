@@ -108,7 +108,7 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
 
     public static boolean canResendConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
         if (isNonOperationConceptSchemeType(type)) {
-            return canPublishItemSchemeExternally(metamacPrincipal);
+            return canResendItemSchemeStreamMessage(metamacPrincipal);
         } else if (isOperationConceptSchemeType(type)) {
             SrmRoleEnum roles[] = {JEFE_NORMALIZACION, JEFE_PRODUCCION};
             return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
