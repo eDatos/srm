@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.organisation.serviceimpl;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
@@ -31,6 +32,9 @@ public class OrganisationSchemeStreamMessagingCallbackImpl implements StreamMess
     public String getUniqueIdentifier(OrganisationSchemeVersionMetamac messageContent) {
         return messageContent.getMaintainableArtefact().getCode();
     }
+
+    @Autowired
+    private ConfigurationService configurationService;
 
     @Override
     public String getProducerRecordKey(OrganisationSchemeVersionMetamac messageContent){
@@ -74,6 +78,6 @@ public class OrganisationSchemeStreamMessagingCallbackImpl implements StreamMess
 
     @Override
     public String getTopic() {
-        return "ORGANISATION_SCHEME_PUBLICATIONS";
+        return configurationService.retrieveKafkaTopicOrganisationSchemesPublication();
     }
 }

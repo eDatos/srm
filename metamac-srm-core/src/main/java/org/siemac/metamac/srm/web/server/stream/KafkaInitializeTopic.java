@@ -66,11 +66,11 @@ public class KafkaInitializeTopic implements ApplicationListener<ContextRefreshe
 
     private List<NewTopic> getTopics() {
         List<NewTopic> topics = new ArrayList<>();
-        topics.add(createTopic("CODELIST_PUBLICATIONS")); // TODO EDATOS-3433: create a common metadata property for the topic value
-        topics.add(createTopic("CONCEPT_SCHEME_PUBLICATIONS"));
-        topics.add(createTopic("CATEGORY_SCHEME_PUBLICATIONS"));
-        topics.add(createTopic("DATA_STRUCTURE_DEFINITION_PUBLICATIONS"));
-        topics.add(createTopic("ORGANISATION_SCHEME_PUBLICATIONS"));
+        topics.add(createTopic(configurationService.retrieveKafkaTopicCodelistsPublication()));
+        topics.add(createTopic(configurationService.retrieveKafkaTopicDsdPublication()));
+        topics.add(createTopic(configurationService.retrieveKafkaTopicConceptSchemesPublication()));
+        topics.add(createTopic(configurationService.retrieveKafkaTopicOrganisationSchemesPublication()));
+        topics.add(createTopic(configurationService.retrieveKafkaTopicCategorySchemesPublication()));
         return topics;
     }
 

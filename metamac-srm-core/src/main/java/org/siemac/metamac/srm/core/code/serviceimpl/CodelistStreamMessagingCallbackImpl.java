@@ -4,6 +4,7 @@ import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCrit
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
@@ -26,6 +27,9 @@ class CodelistStreamMessagingCallbackImpl implements StreamMessagingCallback<Cod
 
     @Autowired
     private CodelistVersionMetamacRepository codelistVersionMetamacRepository;
+
+    @Autowired
+    private ConfigurationService configurationService;
 
     @Override
     public String getUniqueIdentifier(CodelistVersionMetamac messageContent) {
@@ -74,6 +78,6 @@ class CodelistStreamMessagingCallbackImpl implements StreamMessagingCallback<Cod
 
     @Override
     public String getTopic() {
-        return "CODELIST_PUBLICATIONS";
+        //return configurationService.retrieveKafkaTopicCodelistsPublication();
     }
 }

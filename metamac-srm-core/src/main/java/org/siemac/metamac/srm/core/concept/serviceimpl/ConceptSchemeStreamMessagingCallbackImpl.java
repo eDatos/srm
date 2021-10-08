@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.concept.serviceimpl;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
@@ -26,6 +27,9 @@ public class ConceptSchemeStreamMessagingCallbackImpl implements StreamMessaging
 
     @Autowired
     private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
+
+    @Autowired
+    private ConfigurationService configurationService;
 
     @Override
     public String getUniqueIdentifier(ConceptSchemeVersionMetamac messageContent) {
@@ -74,6 +78,6 @@ public class ConceptSchemeStreamMessagingCallbackImpl implements StreamMessaging
 
     @Override
     public String getTopic() {
-        return "CONCEPT_SCHEME_PUBLICATIONS";
+        return configurationService.retrieveKafkaTopicConceptSchemesPublication();
     }
 }

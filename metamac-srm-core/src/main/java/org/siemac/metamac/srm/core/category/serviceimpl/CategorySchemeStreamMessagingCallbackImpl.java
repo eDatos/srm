@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.category.serviceimpl;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
@@ -26,6 +27,9 @@ public class CategorySchemeStreamMessagingCallbackImpl implements StreamMessagin
 
     @Autowired
     private CategorySchemeVersionMetamacRepository categorySchemeVersionMetamacRepository;
+
+    @Autowired
+    private ConfigurationService configurationService;
 
     @Override
     public String getUniqueIdentifier(CategorySchemeVersionMetamac messageContent) {
@@ -74,6 +78,6 @@ public class CategorySchemeStreamMessagingCallbackImpl implements StreamMessagin
 
     @Override
     public String getTopic() {
-        return "CATEGORY_SCHEME_PUBLICATIONS";
+        return configurationService.retrieveKafkaTopicCategorySchemesPublication();
     }
 }

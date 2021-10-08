@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.dsd.serviceimpl;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
@@ -26,6 +27,9 @@ public class DsdStreamMessagingCallbackImpl implements StreamMessagingService.St
 
     @Autowired
     private DataStructureDefinitionVersionMetamacRepository dataStructureDefinitionVersionMetamacRepository;
+
+    @Autowired
+    private ConfigurationService configurationService;
 
     @Override
     public String getUniqueIdentifier(DataStructureDefinitionVersionMetamac messageContent) {
@@ -74,6 +78,6 @@ public class DsdStreamMessagingCallbackImpl implements StreamMessagingService.St
 
     @Override
     public String getTopic() {
-        return "DATA_STRUCTURE_DEFINITION_PUBLICATIONS";
+        return configurationService.retrieveKafkaTopicDsdPublication();
     }
 }
