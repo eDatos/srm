@@ -111,7 +111,7 @@ public class StreamMessagingServiceImpl implements StreamMessagingService, Appli
         A messageContentAvro = streamMessagingCallback.getMapper().toAvro(messageContent);
 
         MessageBase<Object, SpecificRecordBase> message = new AvroMessage<>(streamMessagingCallback.getProducerRecordKey(messageContent), messageContentAvro);
-        String topic = streamMessagingCallback.getTopic(); // TODO EDATOS-3433: choose between having a unique topic for every message (and change the retrieve method) or getting each one from streamMessagingCallback
+        String topic = streamMessagingCallback.getTopic();
 
         getProducer().sendMessage(message, topic);
     }
