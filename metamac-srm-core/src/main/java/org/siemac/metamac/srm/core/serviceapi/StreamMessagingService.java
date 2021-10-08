@@ -13,7 +13,11 @@ public interface StreamMessagingService {
     <E, A extends SpecificRecordBase, M extends Do2AvroMapper<E, A>> SendStreamMessageResult sendMessage(E messageContent, StreamMessagingCallback<E, A, M> streamMessagingCallback);
     <E, A extends SpecificRecordBase, M extends Do2AvroMapper<E, A>> void resendAllPendingAndFailedMessages(StreamMessagingCallback<E, A, M> streamMessagingCallback) throws MetamacException;
 
-    // TODO EDATOS-3433: the number of methods can be reduced somehow
+    /**
+     * @param <E> The Entity that contains the information to be sent
+     * @param <A> The Avro object to be sent via kafka
+     * @param <M> The Mapper that converts the entity into the avro object
+     */
     interface StreamMessagingCallback<E, A extends SpecificRecordBase, M extends Do2AvroMapper<E, A>> {
 
         String getUniqueIdentifier(E messageContent);
