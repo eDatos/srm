@@ -1912,6 +1912,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
+    public void testResendCodelist() throws Exception {
+        // NO TEST
+    }
+
+    @Override
+    @Test
     public void testDeleteCodelist() throws Exception {
         String urn = CODELIST_2_V1;
 

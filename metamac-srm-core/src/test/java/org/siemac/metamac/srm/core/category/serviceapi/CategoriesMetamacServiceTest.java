@@ -1127,6 +1127,12 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
     @Override
     @Test
+    public void testResendCategoryScheme() throws Exception {
+        // NO TEST
+    }
+
+    @Override
+    @Test
     public void testDeleteCategoryScheme() throws Exception {
 
         String urn = CATEGORY_SCHEME_2_V1;
