@@ -70,6 +70,7 @@ public class KafkaInitializeTopic implements ApplicationListener<ContextRefreshe
         topics.add(createTopic("CONCEPT_SCHEME_PUBLICATIONS"));
         topics.add(createTopic("CATEGORY_SCHEME_PUBLICATIONS"));
         topics.add(createTopic("DATA_STRUCTURE_DEFINITION_PUBLICATIONS"));
+        topics.add(createTopic("ORGANISATION_SCHEME_PUBLICATIONS"));
         return topics;
     }
 

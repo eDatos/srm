@@ -2456,6 +2456,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public SendStreamMessageResult resendOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        OrganisationsSecurityUtils.canResendOrganisationScheme(ctx);
+
+        // Send organisation schemes
+        SendStreamMessageResult sendStreamMessageResult = getOrganisationsMetamacService().resendOrganisationScheme(ctx, organisationSchemeVersion);
+
+        // Return
+        return sendStreamMessageResult;
+    }
+
+    @Override
     public TaskInfo copyOrganisationScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canCopyOrganisationScheme(ctx);

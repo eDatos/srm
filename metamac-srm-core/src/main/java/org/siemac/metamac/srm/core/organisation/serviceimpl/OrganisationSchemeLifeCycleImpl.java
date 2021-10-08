@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
+import org.siemac.metamac.srm.core.serviceapi.StreamMessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,25 +40,31 @@ import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsSer
 public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
-    private ItemSchemeVersionRepository                itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository                   itemSchemeVersionRepository;
 
     @Autowired
-    private OrganisationRepository                     organisationRepository;
+    private OrganisationRepository                        organisationRepository;
 
     @Autowired
-    private OrganisationMetamacRepository              organisationMetamacRepository;
+    private OrganisationMetamacRepository                 organisationMetamacRepository;
 
     @Autowired
-    private OrganisationSchemeVersionMetamacRepository organisationSchemeVersionMetamacRepository;
+    private OrganisationSchemeVersionMetamacRepository    organisationSchemeVersionMetamacRepository;
 
     @Autowired
-    private OrganisationsService                       organisationsService;
+    private OrganisationsService                          organisationsService;
 
     @Autowired
-    private OrganisationsMetamacService                organisationsMetamacService;
+    private OrganisationsMetamacService                   organisationsMetamacService;
 
     @Autowired
-    private BaseService                                baseService;
+    private BaseService                                   baseService;
+
+    @Autowired
+    private StreamMessagingService                        streamMessagingService;
+
+    @Autowired
+    private OrganisationSchemeStreamMessagingCallbackImpl organisationSchemeStreamMessagingCallback;
 
     public OrganisationSchemeLifeCycleImpl() {
         this.callback = new OrganisationSchemeLifeCycleCallback();
@@ -240,7 +247,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public void notifyPublication(Object message) {
-            // TODO EDATOS-3433
+            streamMessagingService.sendMessage((OrganisationSchemeVersionMetamac) message, organisationSchemeStreamMessagingCallback);
         }
 
         private OrganisationSchemeVersionMetamac getOrganisationSchemeVersionMetamac(Object srmResource) {

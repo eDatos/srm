@@ -1,6 +1,7 @@
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-organisations.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-organisation.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 
 Application DtosMetamacOrganisationDomain {
 	basePackage=unused
@@ -12,6 +13,8 @@ Application DtosMetamacOrganisationDomain {
 		DataTransferObject OrganisationSchemeMetamacDto extends @OrganisationSchemeDto {
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
+			"Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 		}
 		
 		"Dto for OrganisationSchemeMetamac"

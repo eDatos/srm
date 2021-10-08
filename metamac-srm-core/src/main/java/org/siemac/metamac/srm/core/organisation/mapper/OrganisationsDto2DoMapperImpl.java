@@ -47,7 +47,7 @@ public class OrganisationsDto2DoMapperImpl extends BaseDto2DoMapperImpl implemen
         }
 
         // Modifiable attributes
-        // nothing
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
 
         // Sdmx metadata
         organisationDto2DoMapperSdmxSrm.organisationSchemeDtoToDo(source, target);

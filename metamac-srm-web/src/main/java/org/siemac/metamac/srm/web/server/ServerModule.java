@@ -138,6 +138,7 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSc
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationsBySchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.ReSendOrganisationSchemeStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.UpdateOrganisationSchemeProcStatusActionHandler;
@@ -279,6 +280,7 @@ import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersi
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.ReSendOrganisationSchemeStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusAction;
@@ -375,6 +377,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(CreateOrganisationSchemeTemporalVersionAction.class, CreateOrganisationSchemeTemporalVersionActionHandler.class);
         bindHandler(CopyOrganisationSchemeAction.class, CopyOrganisationSchemeActionHandler.class);
         bindHandler(ExportOrganisationsAction.class, ExportOrganisationsActionHandler.class);
+        bindHandler(ReSendOrganisationSchemeStreamMessageAction.class, ReSendOrganisationSchemeStreamMessageActionHandler.class);
 
         // Categories
         bindHandler(GetCategorySchemesAction.class, GetCategorySchemesActionHandler.class);

@@ -106,6 +106,7 @@
                                 <import>${project.basedir}/src/main/resources/avro-schemas/concept-scheme.avsc</import>
                                 <import>${project.basedir}/src/main/resources/avro-schemas/category-scheme.avsc</import>
                                 <import>${project.basedir}/src/main/resources/avro-schemas/data-structure-definition.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/organisation-scheme.avsc</import>
                             </imports>
                             <sourceDirectory>${project.basedir}/src/main/resources/avro-schemas/</sourceDirectory>
                             <outputDirectory>${project.basedir}/target/generated-sources/avro/</outputDirectory>

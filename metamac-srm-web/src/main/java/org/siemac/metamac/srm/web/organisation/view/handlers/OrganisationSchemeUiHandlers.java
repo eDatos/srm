@@ -28,6 +28,10 @@ public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers
 
     void exportOrganisations(String conceptSchemeUrn);
 
+    // Stream messages
+
+    void reSendStreamMessageOrganisationScheme(String urn);
+
     // Life cycle
 
     void sendToProductionValidation(String urn, OrganisationSchemeTypeEnum organisationSchemeTypeEnum, ProcStatusEnum currentProcStatus);
