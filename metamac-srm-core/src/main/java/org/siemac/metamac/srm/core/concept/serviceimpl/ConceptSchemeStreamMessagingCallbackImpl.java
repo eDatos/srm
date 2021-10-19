@@ -77,7 +77,7 @@ public class ConceptSchemeStreamMessagingCallbackImpl implements StreamMessaging
     }
 
     @Override
-    public String getTopic() {
+    public String getTopic() throws MetamacException {
         return configurationService.retrieveKafkaTopicConceptSchemesPublication();
     }
 }

@@ -26,6 +26,6 @@ public interface StreamMessagingService {
         M getMapper();
         StreamMessageStatusEnum getStreamMessageStatus(E messageContent);
         void setStreamMessageStatus(E messageContent, StreamMessageStatusEnum streamMessageStatus);
-        String getTopic();
+        String getTopic() throws MetamacException;
     }
 }

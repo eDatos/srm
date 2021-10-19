@@ -64,7 +64,7 @@ public class KafkaInitializeTopic implements ApplicationListener<ContextRefreshe
         return properties;
     }
 
-    private List<NewTopic> getTopics() {
+    private List<NewTopic> getTopics() throws MetamacException {
         List<NewTopic> topics = new ArrayList<>();
         topics.add(createTopic(configurationService.retrieveKafkaTopicCodelistsPublication()));
         topics.add(createTopic(configurationService.retrieveKafkaTopicDsdPublication()));

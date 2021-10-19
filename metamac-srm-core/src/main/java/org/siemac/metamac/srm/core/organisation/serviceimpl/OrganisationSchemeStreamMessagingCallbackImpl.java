@@ -77,7 +77,7 @@ public class OrganisationSchemeStreamMessagingCallbackImpl implements StreamMess
     }
 
     @Override
-    public String getTopic() {
+    public String getTopic() throws MetamacException {
         return configurationService.retrieveKafkaTopicOrganisationSchemesPublication();
     }
 }

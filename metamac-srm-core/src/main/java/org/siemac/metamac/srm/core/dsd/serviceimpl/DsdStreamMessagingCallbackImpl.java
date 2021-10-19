@@ -77,7 +77,7 @@ public class DsdStreamMessagingCallbackImpl implements StreamMessagingService.St
     }
 
     @Override
-    public String getTopic() {
+    public String getTopic() throws MetamacException {
         return configurationService.retrieveKafkaTopicDsdPublication();
     }
 }
