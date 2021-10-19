@@ -54,6 +54,8 @@ Application DsdsMetamac {
 	    	@DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publish externally a data structure definition"
 	    	@DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(String urn) throws MetamacException;
+	    	"Resend a data structure definition"
+            org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult resendDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
 	    	
 			"Deletes data structure definition version. This must be last version and no published"
     		deleteDataStructureDefinition(String urn) throws MetamacException;
@@ -181,6 +183,9 @@ Application DsdsMetamac {
 			
 			"Statistical operation"
 			- @ExternalItem statisticalOperation nullable cascade="all" databaseColumn="STATISTICAL_OPERATION_FK";
+
+			"Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 			
 			Repository DataStructureDefinitionVersionMetamacRepository {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);

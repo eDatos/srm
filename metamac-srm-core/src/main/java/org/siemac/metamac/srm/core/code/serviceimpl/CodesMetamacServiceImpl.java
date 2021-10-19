@@ -102,9 +102,12 @@ import org.siemac.metamac.srm.core.common.service.utils.TsvImportationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.core.normalisation.DiceLuceneRamAproxStringMatch;
 import org.siemac.metamac.srm.core.normalisation.MatchResult;
 import org.siemac.metamac.srm.core.notices.serviceimpl.utils.NoticesCallbackMetamacImpl;
+import org.siemac.metamac.srm.core.serviceapi.StreamMessagingService;
+import org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodeOrdersTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodesTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationVariableElementsTsvHeader;
@@ -153,69 +156,75 @@ import com.vividsolutions.jts.geom.Polygon;
 public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Autowired
-    private BaseService                    baseService;
+    private BaseService                         baseService;
 
     @Autowired
-    private CodesService                   codesService;
+    private CodesService                        codesService;
 
     @Autowired
-    private CategoriesMetamacService       categoriesMetamacService;
+    private CategoriesMetamacService            categoriesMetamacService;
 
     @Autowired
-    private ItemSchemeVersionRepository    itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository         itemSchemeVersionRepository;
 
     @Autowired
-    private CodeRepository                 codeRepository;
+    private CodeRepository                      codeRepository;
 
     @Autowired
-    private ItemSchemeRepository           itemSchemeRepository;
+    private ItemSchemeRepository                itemSchemeRepository;
 
     @Autowired
-    private IdentifiableArtefactRepository identifiableArtefactRepository;
+    private IdentifiableArtefactRepository      identifiableArtefactRepository;
 
     @Autowired
     @Qualifier("codelistLifeCycle")
-    private LifeCycle                      codelistLifeCycle;
+    private LifeCycle                           codelistLifeCycle;
 
     @Autowired
-    private SrmValidation                  srmValidation;
+    private SrmValidation                       srmValidation;
 
     @Autowired
-    private SrmConfiguration               srmConfiguration;
+    private SrmConfiguration                    srmConfiguration;
 
     @Autowired
     @Qualifier("codesVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback        codesVersioningWithCodesCallback;
+    private ItemSchemesCopyCallback             codesVersioningWithCodesCallback;
 
     @Autowired
     @Qualifier("codesVersioningWithoutCodesCallbackMetamac")
-    private ItemSchemesCopyCallback        codesVersioningWithoutCodesCallback;
+    private ItemSchemesCopyCallback             codesVersioningWithoutCodesCallback;
 
     @Autowired
     @Qualifier("codesDummyVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback        codesDummyVersioningCallbackMetamac;
+    private ItemSchemesCopyCallback             codesDummyVersioningCallbackMetamac;
 
     @Autowired
     @Qualifier("codesCopyCallbackMetamac")
-    private ItemSchemesCopyCallback        codesCopyCallback;
+    private ItemSchemesCopyCallback             codesCopyCallback;
+
+    @Autowired
+    private CodelistStreamMessagingCallbackImpl codelistStreamMessagingCallback;
+
+    @Autowired
+    private StreamMessagingService              streamMessagingService;
 
     @Autowired
     @Qualifier(NoticesCallbackMetamacImpl.BEAN_ID)
-    private NoticesCallback                noticesCallbackMetamac;
+    private NoticesCallback                     noticesCallbackMetamac;
 
     @Autowired
-    private TasksMetamacService            tasksMetamacService;
+    private TasksMetamacService                 tasksMetamacService;
 
     @Autowired
-    private InternationalStringRepository  internationalStringRepository;
+    private InternationalStringRepository       internationalStringRepository;
 
     @Autowired
-    private MiscMetamacService             miscMetamacService;
+    private MiscMetamacService                  miscMetamacService;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
-    protected EntityManager                entityManager;
+    protected EntityManager                     entityManager;
 
-    private static Logger                  logger = LoggerFactory.getLogger(CodesMetamacService.class);
+    private static Logger                       logger = LoggerFactory.getLogger(CodesMetamacService.class);
 
     public CodesMetamacServiceImpl() {
     }
@@ -256,6 +265,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         codelistVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         codelistVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        codelistVersion.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
 
         return codelistVersion;
     }
@@ -421,6 +431,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodelistVersionMetamac publishExternallyCodelist(ServiceContext ctx, String urn) throws MetamacException {
         return (CodelistVersionMetamac) codelistLifeCycle.publishExternally(ctx, urn);
+    }
+
+    @Override
+    public SendStreamMessageResult resendCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
+        return streamMessagingService.sendMessage(codelistVersion, codelistStreamMessagingCallback);
     }
 
     @Override

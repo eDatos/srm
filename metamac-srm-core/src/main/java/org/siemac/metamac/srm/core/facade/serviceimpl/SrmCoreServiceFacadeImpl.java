@@ -100,6 +100,7 @@ import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
 import org.siemac.metamac.srm.core.security.OrganisationsSecurityUtils;
 import org.siemac.metamac.srm.core.security.TasksSecurityUtils;
+import org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -383,6 +384,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
+    }
+
+    @Override
+    public SendStreamMessageResult resendDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionSecurityUtils.canResendDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
+
+        // Send data structure definitions
+        SendStreamMessageResult sendStreamMessageResult = getDataStructureDefinitionMetamacService().resendDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
+
+        // Return
+        return sendStreamMessageResult;
     }
 
     @Override
@@ -1350,6 +1364,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to DTO
         CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionPublished);
         return codelistDto;
+    }
+
+    @Override
+    public SendStreamMessageResult resendCodelist(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canResendCodelist(ctx);
+
+        // Send codelist
+        CodelistVersionMetamac codelist = getCodesMetamacService().retrieveCodelistByUrn(ctx, urn);
+        SendStreamMessageResult sendStreamMessageResult = getCodesMetamacService().resendCodelist(ctx, codelist);
+
+        // Return
+        return sendStreamMessageResult;
     }
 
     @Override
@@ -2429,6 +2456,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public SendStreamMessageResult resendOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, urn);
+        OrganisationsSecurityUtils.canResendOrganisationScheme(ctx);
+
+        // Send organisation schemes
+        SendStreamMessageResult sendStreamMessageResult = getOrganisationsMetamacService().resendOrganisationScheme(ctx, organisationSchemeVersion);
+
+        // Return
+        return sendStreamMessageResult;
+    }
+
+    @Override
     public TaskInfo copyOrganisationScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canCopyOrganisationScheme(ctx);
@@ -2946,6 +2986,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to Dto
         ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersionPublished);
         return conceptSchemeDto;
+    }
+
+    @Override
+    public SendStreamMessageResult resendConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canResendConceptScheme(ctx, conceptSchemeVersion);
+
+        // Send concept schemes
+        SendStreamMessageResult sendStreamMessageResult = getConceptsMetamacService().resendConceptScheme(ctx, conceptSchemeVersion);
+
+        // Return
+        return sendStreamMessageResult;
     }
 
     @Override
@@ -3545,6 +3598,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to DTO
         CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersionPublished);
         return categorySchemeDto;
+    }
+
+    @Override
+    public SendStreamMessageResult resendCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        CategoriesSecurityUtils.canResendCategoryScheme(ctx);
+
+        // Send category schemes
+        SendStreamMessageResult sendStreamMessageResult = getCategoriesMetamacService().resendCategoryScheme(ctx, categorySchemeVersion);
+
+        // Return
+        return sendStreamMessageResult;
     }
 
     @Override

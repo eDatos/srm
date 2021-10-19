@@ -29,6 +29,7 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
         }
         CategorySchemeMetamacDto target = new CategorySchemeMetamacDto();
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
 
         do2DtoMapperSdmxSrm.categorySchemeDoToDto(source, target);
         return target;

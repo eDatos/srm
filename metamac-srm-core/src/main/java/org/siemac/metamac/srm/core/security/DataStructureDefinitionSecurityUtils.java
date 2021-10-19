@@ -91,6 +91,12 @@ public class DataStructureDefinitionSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canResendDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
+        if (!SharedDsdSecurityUtils.canResendDsd(getMetamacPrincipal(ctx), getOperationCode(dataStructureDefinitionVersionMetamac))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canVersioningDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
         if (!SharedDsdSecurityUtils.canVersioningDsd(getMetamacPrincipal(ctx), getOperationCode(dataStructureDefinitionVersionMetamac))) {
             throwExceptionIfOperationNotAllowed(ctx);

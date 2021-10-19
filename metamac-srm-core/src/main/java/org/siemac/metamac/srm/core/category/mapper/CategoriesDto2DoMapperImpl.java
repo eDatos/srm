@@ -50,7 +50,7 @@ public class CategoriesDto2DoMapperImpl extends BaseDto2DoMapperImpl implements 
         }
 
         // Modifiable attributes
-        // nothing
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
 
         // sdmx
         dto2DoMapperSdmxSrm.categorySchemeDtoToDo(source, target);

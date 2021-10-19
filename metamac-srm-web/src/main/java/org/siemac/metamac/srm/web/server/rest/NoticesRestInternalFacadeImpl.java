@@ -75,6 +75,11 @@ public class NoticesRestInternalFacadeImpl implements NoticesRestInternalFacade 
         createNotification(serviceContext, ServiceNoticeAction.RESOURCE_EXTERNAL_PUBLICATION, ServiceNoticeMessage.RESOURCE_EXTERNAL_PUBLICATION_OK, maintainableArtefactDto, resourceType);
     }
 
+    @Override
+    public void createStreamMessageErrorNotification(ServiceContext serviceContext, MaintainableArtefactDto maintainableArtefactDto, TypeExternalArtefactsEnum resourceType) throws MetamacWebException {
+        createNotification(serviceContext, ServiceNoticeAction.STREAM_MESSAGE_SEND, ServiceNoticeMessage.STREAM_MESSAGE_SEND_ERROR, maintainableArtefactDto, resourceType);
+    }
+
     private void createNotification(ServiceContext ctx, String actionCode, String messageCode, MaintainableArtefactDto maintainableArtefactDto, TypeExternalArtefactsEnum resourceType)
             throws MetamacWebException {
 

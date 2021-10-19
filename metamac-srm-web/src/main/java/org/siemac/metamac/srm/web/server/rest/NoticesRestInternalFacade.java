@@ -12,4 +12,5 @@ public interface NoticesRestInternalFacade {
 
     void createInternalPublicationNotification(ServiceContext serviceContext, MaintainableArtefactDto maintainableArtefactDto, TypeExternalArtefactsEnum resourceType) throws MetamacWebException;
     void createExternalPublicationNotification(ServiceContext serviceContext, MaintainableArtefactDto maintainableArtefactDto, TypeExternalArtefactsEnum resourceType) throws MetamacWebException;
+    void createStreamMessageErrorNotification(ServiceContext serviceContext, MaintainableArtefactDto maintainableArtefactDto, TypeExternalArtefactsEnum resourceType) throws MetamacWebException;
 }

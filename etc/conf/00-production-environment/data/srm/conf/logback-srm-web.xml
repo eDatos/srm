@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration>
 <configuration scan="true" scanPeriod="60 seconds">
+    <turboFilter class="org.siemac.edatos.core.common.util.ExpiringDuplicateMessageFilter">
+        <allowedRepetitions>5</allowedRepetitions>
+        <cacheSize>500</cacheSize>
+        <expireAfterWriteSeconds>900</expireAfterWriteSeconds>
+    </turboFilter>
 
     <property name="LOGS_HOME" value="${environment.metamac.data}/srm/logs" />
 

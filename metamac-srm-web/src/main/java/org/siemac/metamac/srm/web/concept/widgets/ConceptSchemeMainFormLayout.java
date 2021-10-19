@@ -115,6 +115,13 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showLifeCycleReSendStreamMessage() {
+        if (ConceptsClientSecurityUtils.canResendConceptSchemeStreamMessage(type, relatedOperationCode)) {
+            lifeCycleReSendStreamMessage.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (ConceptsClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {

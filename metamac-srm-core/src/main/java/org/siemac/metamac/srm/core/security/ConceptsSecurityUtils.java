@@ -80,6 +80,12 @@ public class ConceptsSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canResendConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canResendConceptScheme(getMetamacPrincipal(ctx), conceptSchemeMetamac.getType(), getOperationCode(conceptSchemeMetamac))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canCopyConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
         if (!SharedConceptsSecurityUtils.canCopyConceptScheme(getMetamacPrincipal(ctx), conceptSchemeMetamac.getType(), getOperationCode(conceptSchemeMetamac))) {
             throwExceptionIfOperationNotAllowed(ctx);

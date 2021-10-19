@@ -198,6 +198,8 @@ public abstract class LifeCycleImpl implements LifeCycle {
         // if (callback.isTemporalToPublishExternally(ctx, srmResourceVersion)) {
         if (isTemporalVersionWithExternalPublished) {
             publishExternally(ctx, maintainableArtefact.getUrn());
+        } else {
+            callback.notifyPublication(srmResourceVersion);
         }
 
         return srmResourceVersion;
@@ -264,6 +266,8 @@ public abstract class LifeCycleImpl implements LifeCycle {
                 categoriesService.markCategorisationAsPublic(ctx, categorisation.getMaintainableArtefact().getUrn());
             }
         }
+
+        callback.notifyPublication(srmResourceVersion);
 
         return srmResourceVersion;
     }
@@ -464,5 +468,6 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public Boolean canHaveCategorisations();
         public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
         public Boolean isTemporalToPublishExternally(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
+        public void notifyPublication(Object message);
     }
 }

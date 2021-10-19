@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.siemac.metamac.metamac-srm</groupId>
+        <artifactId>metamac-srm-parent</artifactId>
+        <version>2.9.1-SNAPSHOT</version>
+        <relativePath>../metamac-srm-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.siemac.metamac.metamac-srm</groupId>
+    <artifactId>metamac-srm-kafka</artifactId>
+    <name>SIEMAC :: METAMAC :: SRM :: KAFKA</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>${kafka-avro-serializer.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka-clients.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${avro.version}</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/generated</directory>
+                            <includes>
+                                <include>**/*.java</include>
+                                <include>**/*.xml</include>
+                                <include>**/*.properties</include>
+                                <include>**/*.dot</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/.svn/*</exclude>
+                            </excludes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                        <fileset>
+                            <directory>src/test/generated</directory>
+                            <includes>
+                                <include>**/*.java</include>
+                                <include>**/*.xml</include>
+                                <include>**/*.properties</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/.svn/*</exclude>
+                            </excludes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro-maven-plugin</artifactId>
+                <version>${avro.version}</version>
+                <executions>
+                    <execution>
+                        <id>schemas</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>schema</goal>
+                        </goals>
+                        <configuration>
+                            <!-- It's necessary to import the classes to resolve schema dependencies -->
+                            <imports>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/proc-status-enum.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/datetime.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/international-string.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/related-resource.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/categorisation.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/codelist.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/concept-scheme.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/category-scheme.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/data-structure-definition.avsc</import>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/organisation-scheme.avsc</import>
+                            </imports>
+                            <sourceDirectory>${project.basedir}/src/main/resources/avro-schemas/</sourceDirectory>
+                            <outputDirectory>${project.basedir}/target/generated-sources/avro/</outputDirectory>
+                            <stringType>String</stringType>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

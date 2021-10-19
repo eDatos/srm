@@ -36,10 +36,7 @@ import org.siemac.metamac.srm.web.client.utils.WaitingAsyncCallbackHandlingExpor
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
-import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
-import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
-import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
-import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
+import org.siemac.metamac.srm.web.shared.*;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityResult;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
@@ -88,6 +85,8 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesAction;
 import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesResult;
+import org.siemac.metamac.srm.web.shared.code.ReSendCodelistStreamMessageAction;
+import org.siemac.metamac.srm.web.shared.code.ReSendCodelistStreamMessageResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
@@ -399,6 +398,28 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     retrieveCompleteCodelistByUrn(urn); // Reload the current codelist (the metadata isPlannedInBackground has changed)
                 } else {
                     fireSuccessMessage(getMessages().maintainableArtefactCopied());
+                }
+            }
+        });
+    }
+
+    //
+    // CODELIST STREAM MESSAGES
+    //
+
+    @Override
+    public void reSendStreamMessageCodelist(final CodelistMetamacDto codelistDto) {
+        dispatcher.execute(new ReSendCodelistStreamMessageAction(codelistDto.getUrn()), new WaitingAsyncCallbackHandlingError<ReSendCodelistStreamMessageResult>(this) {
+
+            @Override
+            public void onWaitSuccess(ReSendCodelistStreamMessageResult result) {
+                retrieveCodelistVersions(codelistDto.getUrn());
+                getView().setCodelist(result.getCodelistMetamacDto());
+
+                if (result.getNotificationException() != null) {
+                    ShowMessageEvent.fireWarningMessageWithError(CodelistPresenter.this, getMessages().lifeCycleReSendStreamMessageError(), result.getNotificationException());
+                } else {
+                    ShowMessageEvent.fireSuccessMessage(CodelistPresenter.this, getMessages().lifeCycleReSendStreamMessagePublished());
                 }
             }
         });

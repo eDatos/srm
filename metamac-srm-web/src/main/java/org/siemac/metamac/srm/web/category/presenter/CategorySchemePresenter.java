@@ -60,6 +60,8 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsActio
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.category.ReSendCategorySchemeStreamMessageAction;
+import org.siemac.metamac.srm.web.shared.category.ReSendCategorySchemeStreamMessageResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
@@ -312,6 +314,27 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             @Override
             public void onWaitSuccess(CopyCategorySchemeResult result) {
                 fireSuccessMessage(getMessages().maintainableArtefactCopied());
+            }
+        });
+    }
+
+    //
+    // CATEGORY SCHEME STREAM MESSAGES
+    //
+
+    @Override
+    public void reSendStreamMessageCategoryScheme(final String urn) {
+        dispatcher.execute(new ReSendCategorySchemeStreamMessageAction(urn), new WaitingAsyncCallbackHandlingError<ReSendCategorySchemeStreamMessageResult>(this) {
+
+            @Override
+            public void onWaitSuccess(ReSendCategorySchemeStreamMessageResult result) {
+                retrieveCategorySchemeByUrn(urn);
+
+                if (result.getNotificationException() != null) {
+                    ShowMessageEvent.fireWarningMessageWithError(CategorySchemePresenter.this, getMessages().lifeCycleReSendStreamMessageError(), result.getNotificationException());
+                } else {
+                    ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().lifeCycleReSendStreamMessagePublished());
+                }
             }
         });
     }

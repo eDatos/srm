@@ -106,6 +106,13 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showLifeCycleReSendStreamMessage() {
+        if (DsdClientSecurityUtils.canResendDsdStreamMessage(operationCode)) {
+            lifeCycleReSendStreamMessage.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (DsdClientSecurityUtils.canAnnounceDsd(operationCode)) {

@@ -75,6 +75,12 @@ public class CodesSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canResendCodelist(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canResendCodelistStreamMessage(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canCopyCodelist(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canCopyCodelist(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);

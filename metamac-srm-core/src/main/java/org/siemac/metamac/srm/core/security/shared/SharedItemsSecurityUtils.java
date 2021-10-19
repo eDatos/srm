@@ -57,6 +57,10 @@ public class SharedItemsSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
     }
 
+    public static boolean canResendItemSchemeStreamMessage(MetamacPrincipal metamacPrincipal) {
+        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
+    }
+
     public static boolean canVersioningItemScheme(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
     }

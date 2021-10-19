@@ -79,6 +79,12 @@ public class OrganisationsSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canResendOrganisationScheme(ServiceContext ctx) throws MetamacException {
+        if (!SharedOrganisationsSecurityUtils.canResendOrganisationScheme(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canCopyOrganisationScheme(ServiceContext ctx) throws MetamacException {
         if (!SharedOrganisationsSecurityUtils.canCopyOrganisationScheme(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);

@@ -89,6 +89,7 @@ public class CodesDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Codes
                 ServiceExceptionParameters.CODELIST_DESCRIPTION_SOURCE));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
 
         target.removeAllReplaceToCodelists();
 

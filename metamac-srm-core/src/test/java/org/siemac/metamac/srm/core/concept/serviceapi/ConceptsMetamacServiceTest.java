@@ -1794,6 +1794,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     @Test
+    public void testResendConceptScheme() throws Exception {
+        // NO TEST
+    }
+
+    @Override
+    @Test
     public void testDeleteConceptScheme() throws Exception {
 
         String urn = CONCEPT_SCHEME_2_V1;

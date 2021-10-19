@@ -9,6 +9,7 @@ import org.siemac.metamac.srm.core.category.domain.CategoryMetamacRepository;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -36,6 +37,7 @@ public class CategoriesCopyCallbackMetamacImpl extends CategoriesCopyCallbackImp
         CategorySchemeVersionMetamac target = (CategorySchemeVersionMetamac) targetItemSchemeVersion;
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        target.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
     }
 
     @Override

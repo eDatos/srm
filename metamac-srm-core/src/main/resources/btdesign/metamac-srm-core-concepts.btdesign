@@ -64,6 +64,8 @@ Application ConceptsMetamac {
 	    	@ConceptSchemeVersionMetamac publishInternallyConceptScheme(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publish externally a concept scheme"
 	    	@ConceptSchemeVersionMetamac publishExternallyConceptScheme(String urn) throws MetamacException;
+	    	"Resend a concept scheme"
+	    	org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult resendConceptScheme(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
 			"Deletes concept scheme version. This must be last version and no published"
     		deleteConceptScheme(String urn) throws MetamacException;
     		"Copies a concept scheme version, creating a new concept scheme, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
@@ -169,6 +171,8 @@ Application ConceptsMetamac {
 			Boolean isTypeEmptyPreviously nullable transient;
 			"Related operation, only when type is Operation"
 			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
+			"Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 			
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";

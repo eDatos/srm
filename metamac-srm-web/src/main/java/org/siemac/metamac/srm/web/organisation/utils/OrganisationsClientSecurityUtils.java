@@ -56,6 +56,10 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canPublishOrganisationSchemeExternally(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canResendOrganisationSchemeStreamMessage() {
+        return SharedOrganisationsSecurityUtils.canResendOrganisationScheme(MetamacSrmWeb.getCurrentUser());
+    }
+
     public static boolean canVersioningOrganisationScheme(String urn, RelatedResourceDto maintainer, String versionLogic, OrganisationSchemeTypeEnum organisationSchemeType) {
 
         // Resources from other maintainers can not be version

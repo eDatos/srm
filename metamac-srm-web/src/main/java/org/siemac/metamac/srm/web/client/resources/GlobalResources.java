@@ -97,4 +97,12 @@ public interface GlobalResources extends ClientBundleWithLookup {
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/copy.png")
     ImageResource copy();
+
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
+    @Source("images/success.png")
+    ImageResource success();
+
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
+    @Source("images/reload.png")
+    ImageResource reload();
 }

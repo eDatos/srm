@@ -36,6 +36,8 @@ Application DtosMetamacCodeDomain {
 			- @RelatedResourceDto defaultOpennessVisualisation nullable;
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
+			"Stream message status"
+			- @StreamMessageStatusEnum streamMessageStatus;
 		}
 		
 		"Dto for CodelistMetamac"

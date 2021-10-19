@@ -22,6 +22,10 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
     // Concepts
     void exportConcepts(String conceptSchemeUrn);
 
+    // Stream messages
+
+    void reSendStreamMessageConceptScheme(String urn);
+
     // Life cycle
 
     void sendToProductionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto);

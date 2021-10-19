@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionP
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -45,6 +46,7 @@ public class ConceptsCopyCallbackMetamacImpl extends ConceptsCopyCallbackImpl {
         target.setRelatedOperation(copy(source.getRelatedOperation()));
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        target.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
     }
 
     @Override
