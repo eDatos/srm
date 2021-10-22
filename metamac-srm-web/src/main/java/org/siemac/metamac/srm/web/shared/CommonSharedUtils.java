@@ -14,12 +14,7 @@ import org.siemac.metamac.web.common.client.resources.GlobalResources;
 
 public class CommonSharedUtils {
 
-    private static final EnumMap<StreamMessageStatusEnum, ImageResource> ICON_STREAM_MESSAGE_STATUS = new EnumMap(StreamMessageStatusEnum.class);
-    static {
-        ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.FAILED, GlobalResources.RESOURCE.errorSmart());
-        ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.PENDING, GlobalResources.RESOURCE.warn());
-        ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.SENT, GlobalResources.RESOURCE.success());
-    }
+    private static final EnumMap<StreamMessageStatusEnum, ImageResource> ICON_STREAM_MESSAGE_STATUS = new EnumMap<StreamMessageStatusEnum, ImageResource>(StreamMessageStatusEnum.class);
 
     /**
      * Returns dimension components of dimensionsDescriptor
@@ -42,6 +37,12 @@ public class CommonSharedUtils {
         if (status == null) {
             return null;
         }
+        if (ICON_STREAM_MESSAGE_STATUS.isEmpty()) {
+            ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.FAILED, GlobalResources.RESOURCE.errorSmart());
+            ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.PENDING, GlobalResources.RESOURCE.warn());
+            ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.SENT, GlobalResources.RESOURCE.success());
+        }
+
         FormItemIcon icon = new FormItemIcon();
         icon.setSrc(ICON_STREAM_MESSAGE_STATUS.get(status).getURL());
 
