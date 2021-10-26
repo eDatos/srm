@@ -54,7 +54,7 @@
       },
       {
         "name": "title",
-        "type": "InternationalStringAvro"
+        "type": ["null", "InternationalStringAvro"]
       },
       {
         "name": "uuid",
