@@ -101,6 +101,13 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showLifeCycleReSendStreamMessage() {
+        if (CategoriesClientSecurityUtils.canResendCategorySchemeStreamMessage()) {
+            lifeCycleReSendStreamMessage.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (CategoriesClientSecurityUtils.canAnnounceCategoryScheme()) {

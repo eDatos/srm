@@ -49,10 +49,13 @@ import org.siemac.metamac.srm.core.common.service.utils.TsvImportationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.serviceapi.StreamMessagingService;
+import org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult;
 import org.siemac.metamac.srm.core.task.domain.ImportationOrganisationsTsvHeader;
 import org.siemac.metamac.srm.core.task.serviceapi.TasksMetamacService;
 import org.slf4j.Logger;
@@ -90,56 +93,62 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 @Service("organisationsMetamacService")
 public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacServiceImplBase {
 
-    private static Logger                 logger = LoggerFactory.getLogger(OrganisationsMetamacServiceImpl.class);
+    private static Logger                                 logger = LoggerFactory.getLogger(OrganisationsMetamacServiceImpl.class);
 
     @Autowired
-    private BaseService                   baseService;
+    private BaseService                                   baseService;
 
     @Autowired
-    private OrganisationsService          organisationsService;
+    private OrganisationsService                          organisationsService;
 
     @Autowired
-    private CategoriesMetamacService      categoriesMetamacService;
+    private CategoriesMetamacService                      categoriesMetamacService;
 
     @Autowired
-    private ItemSchemeVersionRepository   itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository                   itemSchemeVersionRepository;
 
     @Autowired
     @Qualifier("organisationSchemeLifeCycle")
-    private LifeCycle                     organisationSchemeLifeCycle;
+    private LifeCycle                                     organisationSchemeLifeCycle;
 
     @Autowired
-    private SrmValidation                 srmValidation;
+    private SrmValidation                                 srmValidation;
 
     @Autowired
-    private SrmConfiguration              srmConfiguration;
+    private SrmConfiguration                              srmConfiguration;
 
     @Autowired
-    private OrganisationRepository        organisationRepository;
+    private OrganisationRepository                        organisationRepository;
 
     @Autowired
-    private ItemSchemeRepository          itemSchemeRepository;
+    private ItemSchemeRepository                          itemSchemeRepository;
 
     @Autowired
-    private InternationalStringRepository internationalStringRepository;
+    private InternationalStringRepository                 internationalStringRepository;
 
     @Autowired
-    private TasksMetamacService           tasksMetamacService;
+    private TasksMetamacService                           tasksMetamacService;
 
     @Autowired
     @Qualifier("organisationsVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback       organisationsVersioningCallback;
+    private ItemSchemesCopyCallback                       organisationsVersioningCallback;
 
     @Autowired
     @Qualifier("organisationsDummyVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback       organisationsDummyVersioningCallback;
+    private ItemSchemesCopyCallback                       organisationsDummyVersioningCallback;
 
     @Autowired
     @Qualifier("organisationsCopyCallbackMetamac")
-    private ItemSchemesCopyCallback       organisationsCopyCallback;
+    private ItemSchemesCopyCallback                       organisationsCopyCallback;
+
+    @Autowired
+    private OrganisationSchemeStreamMessagingCallbackImpl organisationSchemeStreamMessagingCallback;
+
+    @Autowired
+    private StreamMessagingService                        streamMessagingService;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
-    protected EntityManager               entityManager;
+    protected EntityManager                               entityManager;
 
     public OrganisationsMetamacServiceImpl() {
     }
@@ -165,6 +174,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         organisationSchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         organisationSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         organisationSchemeVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        organisationSchemeVersion.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
 
         return organisationSchemeVersion;
     }
@@ -234,6 +244,11 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Override
     public OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(ServiceContext ctx, String urn) throws MetamacException {
         return (OrganisationSchemeVersionMetamac) organisationSchemeLifeCycle.publishExternally(ctx, urn);
+    }
+
+    @Override
+    public SendStreamMessageResult resendOrganisationScheme(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
+        return streamMessagingService.sendMessage(organisationSchemeVersion, organisationSchemeStreamMessagingCallback);
     }
 
     @Override

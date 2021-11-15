@@ -1,9 +1,11 @@
 package org.siemac.metamac.srm.web.code.utils;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.google.gwt.resources.client.ImageResource;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
@@ -11,6 +13,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
@@ -19,6 +22,7 @@ import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
 import org.siemac.metamac.srm.web.shared.code.enums.VariableElementShapeTypeEnum;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.resources.GlobalResources;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
@@ -168,4 +172,5 @@ public class CommonUtils {
     public static boolean isVariableElementWorld(String variableElementUrn) {
         return StringUtils.equals(variableElementUrn, getVariableElementWorldUrn());
     }
+
 }

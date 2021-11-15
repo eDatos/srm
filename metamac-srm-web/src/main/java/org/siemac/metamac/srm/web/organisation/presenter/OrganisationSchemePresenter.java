@@ -45,34 +45,7 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactRe
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
-import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
-import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
-import org.siemac.metamac.srm.web.shared.organisation.CopyOrganisationSchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.CopyOrganisationSchemeResult;
-import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionAction;
-import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionResult;
-import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
-import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListResult;
-import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
-import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
-import org.siemac.metamac.srm.web.shared.organisation.ExportOrganisationsAction;
-import org.siemac.metamac.srm.web.shared.organisation.ExportOrganisationsResult;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsResult;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
-import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
-import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationResult;
-import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeResult;
-import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusAction;
-import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusResult;
-import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeResult;
+import org.siemac.metamac.srm.web.shared.organisation.*;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -327,6 +300,27 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             @Override
             public void onWaitSuccess(CopyOrganisationSchemeResult result) {
                 fireSuccessMessage(getMessages().maintainableArtefactCopied());
+            }
+        });
+    }
+
+    //
+    // ORGANISATION SCHEME STREAM MESSAGES
+    //
+
+    @Override
+    public void reSendStreamMessageOrganisationScheme(final String urn) {
+        dispatcher.execute(new ReSendOrganisationSchemeStreamMessageAction(urn), new WaitingAsyncCallbackHandlingError<ReSendOrganisationSchemeStreamMessageResult>(this) {
+
+            @Override
+            public void onWaitSuccess(ReSendOrganisationSchemeStreamMessageResult result) {
+                retrieveOrganisationSchemeByUrn(urn);
+
+                if (result.getNotificationException() != null) {
+                    ShowMessageEvent.fireWarningMessageWithError(OrganisationSchemePresenter.this, getMessages().lifeCycleReSendStreamMessageError(), result.getNotificationException());
+                } else {
+                    ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().lifeCycleReSendStreamMessagePublished());
+                }
             }
         });
     }

@@ -13,6 +13,7 @@ public class VersionableResourceDS extends DataSource {
     public static final String URN_PROVIDER               = "lc-urn-provider";
     public static final String VERSION_LOGIC              = "lc-version";
     public static final String NAME                       = "lc-name";
+    public static final String PUBLICATION_STREAM_STATUS  = "lc-publication-stream-status";
     // CONTENT DESCRIPTORS
     public static final String DESCRIPTION                = "lc-desc";
     public static final String DESCRIPTION_SOURCE         = "lc-desc-source";

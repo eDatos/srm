@@ -568,6 +568,12 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         // TODO Test dsd (METAMAC-2149)
     }
 
+    @Override
+    @Test
+    public void testResendDataStructureDefinition() throws Exception {
+        // NO TEST
+    }
+
     @Test
     @Override
     @Ignore

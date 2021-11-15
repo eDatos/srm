@@ -20,6 +20,9 @@ public interface CategorySchemeUiHandlers extends BaseCategoryUiHandlers {
     // Categories
     void exportCategories(String categorySchemeUrn);
 
+    // Stream messages
+    void reSendStreamMessageCategoryScheme(String urn);
+
     // Life cycle
 
     void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus);

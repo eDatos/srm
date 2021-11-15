@@ -25,6 +25,15 @@ Application EnumsSrmDomain {
     		ANY_ROLE_ALLOWED;
     	}
 
+    	"Used for represent the status of the message sent to the stream server.
+        The PENDING state is temporary. It's set just before sending the message and replaced by SENT or FAILED in the same transaction.
+        FAILED state is set in any case distinct to SENT."
+        enum StreamMessageStatusEnum {
+           PENDING,
+           SENT,
+           FAILED
+       }
+
     }
 
 }

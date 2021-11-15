@@ -110,6 +110,13 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showLifeCycleReSendStreamMessage() {
+        if (OrganisationsClientSecurityUtils.canResendOrganisationSchemeStreamMessage()) {
+            lifeCycleReSendStreamMessage.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (OrganisationsClientSecurityUtils.canAnnounceOrganisationScheme()) {

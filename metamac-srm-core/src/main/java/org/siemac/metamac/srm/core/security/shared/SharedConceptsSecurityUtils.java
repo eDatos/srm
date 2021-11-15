@@ -106,6 +106,16 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         return false;
     }
 
+    public static boolean canResendConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
+        if (isNonOperationConceptSchemeType(type)) {
+            return canResendItemSchemeStreamMessage(metamacPrincipal);
+        } else if (isOperationConceptSchemeType(type)) {
+            SrmRoleEnum roles[] = {JEFE_NORMALIZACION, JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        }
+        return false;
+    }
+
     public static boolean canCopyConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
         SrmRoleEnum[] roles = {JEFE_NORMALIZACION};
         return canCreateItemScheme(metamacPrincipal) && (!isOperationConceptSchemeType(type) || isOperationAllowed(metamacPrincipal, operationCode, roles));

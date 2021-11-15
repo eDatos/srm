@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -50,6 +51,7 @@ public class CodesCopyCallbackMetamacImpl extends CodesCopyCallbackImpl {
         target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
         target.setVariable(source.getVariable());
         target.setFamily(source.getFamily());
+        target.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
         // note: replaceBy and replaceTo metadata do not must be copied, because they are related to concrete versions of codelist
     }
 

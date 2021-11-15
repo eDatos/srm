@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.web.server.handlers.category.GetCategoryActionHand
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.ReSendCategorySchemeStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.UpdateCategorySchemeProcStatusActionHandler;
@@ -64,6 +65,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamiliesAction
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariablesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.NormaliseVariableElementsToCodesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.ReSendCodelistStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveCodelistsFromCodelistFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveVariablesFromVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodeActionHandler;
@@ -95,6 +97,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesActio
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetStatisticalOperationsActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.ReSendConceptSchemeStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptInOrderActionHandler;
@@ -115,6 +118,7 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdAndDescriptorsAction
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdDimensionsAndCandidateVisualisationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdsActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.dsd.ReSendDsdStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.SaveComponentForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDescriptorForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDsdActionHandler;
@@ -134,6 +138,7 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSc
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationsBySchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.ReSendOrganisationSchemeStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.UpdateOrganisationSchemeProcStatusActionHandler;
@@ -157,6 +162,7 @@ import org.siemac.metamac.srm.web.shared.category.GetCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
+import org.siemac.metamac.srm.web.shared.category.ReSendCategorySchemeStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatusAction;
@@ -200,6 +206,7 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesAction;
+import org.siemac.metamac.srm.web.shared.code.ReSendCodelistStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.RemoveVariablesFromVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
@@ -231,6 +238,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
+import org.siemac.metamac.srm.web.shared.concept.ReSendConceptSchemeStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction;
@@ -252,6 +260,7 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdDimensionsAndCandidateVisualisationsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
+import org.siemac.metamac.srm.web.shared.dsd.ReSendDsdStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
@@ -271,6 +280,7 @@ import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersi
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.ReSendOrganisationSchemeStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemeProcStatusAction;
@@ -323,6 +333,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetDsdDimensionsAndCandidateVisualisationsAction.class, GetDsdDimensionsAndCandidateVisualisationsActionHandler.class);
         bindHandler(CopyDsdAction.class, CopyDsdActionHandler.class);
         bindHandler(GetDefaultConceptForDsdAtributeAction.class, GetDefaultConceptForDsdAtributeActionHandler.class);
+        bindHandler(ReSendDsdStreamMessageAction.class, ReSendDsdStreamMessageActionHandler.class);
 
         // Concepts
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
@@ -345,6 +356,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(ExportConceptsAction.class, ExportConceptsActionHandler.class);
         bindHandler(UpdateConceptInOrderAction.class, UpdateConceptInOrderActionHandler.class);
         bindHandler(UpdateConceptParentAction.class, UpdateConceptParentActionHandler.class);
+        bindHandler(ReSendConceptSchemeStreamMessageAction.class, ReSendConceptSchemeStreamMessageActionHandler.class);
 
         // Organisations
         bindHandler(GetOrganisationSchemesAction.class, GetOrganisationSchemesActionHandler.class);
@@ -365,6 +377,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(CreateOrganisationSchemeTemporalVersionAction.class, CreateOrganisationSchemeTemporalVersionActionHandler.class);
         bindHandler(CopyOrganisationSchemeAction.class, CopyOrganisationSchemeActionHandler.class);
         bindHandler(ExportOrganisationsAction.class, ExportOrganisationsActionHandler.class);
+        bindHandler(ReSendOrganisationSchemeStreamMessageAction.class, ReSendOrganisationSchemeStreamMessageActionHandler.class);
 
         // Categories
         bindHandler(GetCategorySchemesAction.class, GetCategorySchemesActionHandler.class);
@@ -388,6 +401,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(CopyCategorySchemeAction.class, CopyCategorySchemeActionHandler.class);
         bindHandler(CancelCategorisationValidityAction.class, CancelCategorisationValidityActionHandler.class);
         bindHandler(ExportCategoriesAction.class, ExportCategoriesActionHandler.class);
+        bindHandler(ReSendCategorySchemeStreamMessageAction.class, ReSendCategorySchemeStreamMessageActionHandler.class);
 
         // Codes
         bindHandler(DeleteCodelistsAction.class, DeleteCodelistsActionHandler.class);
@@ -447,6 +461,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(ExportCodesAction.class, ExportCodesActionHandler.class);
         bindHandler(ExportCodesOrderAction.class, ExportCodesOrderActionHandler.class);
         bindHandler(ExportVariableElementsAction.class, ExportVariableElementsActionHandler.class);
+        bindHandler(ReSendCodelistStreamMessageAction.class, ReSendCodelistStreamMessageActionHandler.class);
 
         // Common
         bindHandler(GetHelpUrlAction.class, GetHelpUrlActionHandler.class);

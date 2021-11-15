@@ -6,6 +6,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -36,6 +37,7 @@ public class OrganisationsCopyCallbackMetamacImpl extends OrganisationsCopyCallb
         OrganisationSchemeVersionMetamac target = (OrganisationSchemeVersionMetamac) targetItemSchemeVersion;
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        target.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
     }
 
     @Override

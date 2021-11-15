@@ -78,6 +78,7 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
         target.setType(source.getType());
         target.setRelatedOperation(externalItemDtoStatisticalOperationsToExternalItemDo(source.getRelatedOperation(), target.getRelatedOperation(),
                 ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
 
         dto2DoMapperSdmxSrm.conceptSchemeDtoToDo(source, target);
 

@@ -1243,6 +1243,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Override
     @Test
+    public void testResendOrganisationScheme() throws Exception {
+        // NO TEST
+    }
+
+    @Override
+    @Test
     public void testDeleteOrganisationScheme() throws Exception {
 
         String urn = ORGANISATION_SCHEME_2_V1;

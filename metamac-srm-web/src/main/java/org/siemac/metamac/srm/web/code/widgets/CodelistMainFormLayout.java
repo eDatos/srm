@@ -137,6 +137,13 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showLifeCycleReSendStreamMessage() {
+        if (CodesClientSecurityUtils.canResendCodelistStreamMessage(isTaskInBackground)) {
+            lifeCycleReSendStreamMessage.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (CodesClientSecurityUtils.canAnnounceCodelist()) {

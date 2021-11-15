@@ -1,0 +1,114 @@
+[
+  {
+    "type": "enum",
+    "name": "AccessTypeEnumAvro",
+    "namespace": "org.siemac.metamac.srm.core.stream.message",
+    "symbols": [
+      "PUBLIC",
+      "RESTRICTED"
+    ]
+  },
+  {
+    "type": "record",
+    "name": "CodelistAvro",
+    "namespace": "org.siemac.metamac.srm.core.stream.message",
+    "fields": [
+      {
+        "name": "uuid",
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      {
+        "name": "name",
+        "type": ["null", "InternationalStringAvro"]
+      },
+      {
+        "name": "shortName",
+        "type": [
+          "null",
+          "InternationalStringAvro"
+        ]
+      },
+      {
+        "name": "urn",
+        "type": ["null", "string"]
+      },
+      {
+        "name": "version",
+        "type": [
+          "null",
+          "long"
+        ]
+      },
+      {
+        "name": "uriProvider",
+        "type": ["null", "string"]
+      },
+      {
+        "name": "urnProvider",
+        "type": ["null", "string"]
+      },
+      {
+        "name": "description",
+        "type": ["null", "InternationalStringAvro"]
+      },
+      {
+        "name": "descriptionSource",
+        "type": [
+          "null",
+          "InternationalStringAvro"
+        ]
+      },
+      {
+        "name": "isPartial",
+        "type": [
+          "null",
+          "boolean"
+        ]
+      },
+      {
+        "name": "finalLogic",
+        "type": ["null", "boolean"]
+      },
+      {
+        "name": "maintainer",
+        "type": ["null", "RelatedResourceAvro"]
+      },
+      {
+        "name": "procStatus",
+        "type": ["null", "ProcStatusEnumAvro"]
+      },
+      {
+        "name": "categorizations",
+        "type": {
+          "type": "array",
+          "items": "RelatedResourceAvro"
+        }
+      },
+      {
+        "name": "accessType",
+        "type": [
+          "null",
+          "AccessTypeEnumAvro"
+        ]
+      },
+      {
+        "name": "isRecommended",
+        "type": [
+          "null",
+          "boolean"
+        ]
+      },
+      {
+        "name": "family",
+        "type": ["null", "RelatedResourceAvro"]
+      },
+      {
+        "name": "variable",
+        "type": "RelatedResourceAvro"
+      }
+    ]
+  }
+]

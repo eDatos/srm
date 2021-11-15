@@ -30,6 +30,7 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
         }
         OrganisationSchemeMetamacDto target = new OrganisationSchemeMetamacDto();
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
         do2DtoMapperSdmxSrm.organisationSchemeDoToDto(source, target);
         return target;
     }

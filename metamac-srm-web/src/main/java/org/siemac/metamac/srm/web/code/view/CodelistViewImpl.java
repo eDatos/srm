@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
 import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
@@ -43,6 +44,7 @@ import org.siemac.metamac.srm.web.code.widgets.CodelistOpennesssLevelsPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOrdersPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
+import org.siemac.metamac.srm.web.shared.CommonSharedUtils;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
@@ -422,6 +424,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 copyCodelistAskingCode(codelistDto.getUrn());
             }
         });
+        mainFormLayout.getLifeCycleReSendStreamMessage().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().reSendStreamMessageCodelist(codelistDto);
+            }
+        });
     }
     @Override
     public Widget asWidget() {
@@ -629,7 +637,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem urn = new ViewTextItem(CodelistDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CodelistDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(CodelistDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersForm.setFields(code, name, shortName, uriProvider, urn, urnProvider, version);
+        ViewTextItem publicationStreamStatus = new ViewTextItem(CodelistDS.PUBLICATION_STREAM_STATUS, getConstants().lifeCycleStructuralResourceStreamMsgStatus());
+        publicationStreamStatus.setWidth(20);
+
+        identifiersForm.setFields(code, name, shortName, uriProvider, urn, urnProvider, version, publicationStreamStatus);
 
         // CONTENT DESCRIPTORS
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -802,6 +813,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         identifiersForm.setValue(CodelistDS.VERSION_LOGIC, codelistDto.getVersionLogic());
         identifiersForm.setValue(CodelistDS.NAME, codelistDto.getName());
         identifiersForm.setValue(CodelistDS.SHORT_NAME, codelistDto.getShortName());
+        identifiersForm.getItem(CodelistDS.PUBLICATION_STREAM_STATUS)
+                .setIcons(StreamMessageStatusEnum.PENDING.equals(codelistDto.getStreamMessageStatus()) ? null : CommonSharedUtils.getPublicationStreamStatusIcon(codelistDto.getStreamMessageStatus()));
 
         // CONTENT DESCRIPTORS
 

@@ -2,6 +2,7 @@ import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-common.btdesign"
+import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 
 Application DtosMetamacDsdDomain {
 	basePackage=unused
@@ -35,6 +36,9 @@ Application DtosMetamacDsdDomain {
 			
 			"Statistical operation"
 			- @ExternalItemDto statisticalOperation nullable;
+
+			"Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 		}
 		
 		"Dto for DataStructureDefinitionMetamac"

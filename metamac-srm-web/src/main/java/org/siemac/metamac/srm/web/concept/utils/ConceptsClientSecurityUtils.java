@@ -58,6 +58,10 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canPublishConceptSchemeExternally(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
+    public static boolean canResendConceptSchemeStreamMessage(ConceptSchemeTypeEnum type, String operationCode) {
+        return SharedConceptsSecurityUtils.canResendConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+    }
+
     public static boolean canVersioningConceptScheme(ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto maintainer, String versionLogic) {
         if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer)) {
             return false;

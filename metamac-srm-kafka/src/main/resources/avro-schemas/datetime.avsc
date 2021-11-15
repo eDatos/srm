@@ -1,0 +1,19 @@
+{
+  "namespace": "org.siemac.metamac.srm.core.stream.message",
+  "name": "DatetimeAvro",
+  "type": "record",
+  "fields": [
+    {
+      "name": "instant",
+      "type": "long"
+    },
+    {
+      "name": "timezone",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    }
+  ]
+}

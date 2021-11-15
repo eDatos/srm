@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.serviceapi.StreamMessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,22 +38,28 @@ import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
-    private ItemSchemeVersionRepository            itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository               itemSchemeVersionRepository;
 
     @Autowired
-    private CategorySchemeVersionMetamacRepository categorySchemeVersionMetamacRepository;
+    private CategorySchemeVersionMetamacRepository    categorySchemeVersionMetamacRepository;
 
     @Autowired
-    private CategoryRepository                     categoryRepository;
+    private CategoryRepository                        categoryRepository;
 
     @Autowired
-    private CategoriesService                      categoriesService;
+    private CategoriesService                         categoriesService;
 
     @Autowired
-    private CategoriesMetamacService               categoriesMetamacService;
+    private CategoriesMetamacService                  categoriesMetamacService;
 
     @Autowired
-    private BaseService                            baseService;
+    private BaseService                               baseService;
+
+    @Autowired
+    private StreamMessagingService                    streamMessagingService;
+
+    @Autowired
+    private CategorySchemeStreamMessagingCallbackImpl categorySchemeStreamMessagingCallback;
 
     public CategorySchemeLifeCycleImpl() {
         this.callback = new CategorySchemeLifeCycleCallback();
@@ -212,6 +219,11 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
                 return Boolean.TRUE;
             }
             return Boolean.FALSE;
+        }
+
+        @Override
+        public void notifyPublication(Object message) {
+            streamMessagingService.sendMessage((CategorySchemeVersionMetamac) message, categorySchemeStreamMessagingCallback);
         }
 
         private CategorySchemeVersionMetamac getCategorySchemeVersionMetamac(Object srmResource) {

@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
@@ -43,6 +44,7 @@ public class DataStructureDefinitionsCopyCallbackMetamacImpl extends DataStructu
         target.setStatisticalOperation(copy(source.getStatisticalOperation()));
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT)); // New structure in draft version
         target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        target.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
     }
 
     @Override

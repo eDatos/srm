@@ -20,6 +20,10 @@ public interface DsdGeneralTabUiHandlers extends BaseUiHandlers {
 
     void retrieveDimensionsAndCandidateVisualisations(String dsdUrn);
 
+    // Stream messages
+
+    void reSendStreamMessageDsd(String urn);
+
     // Life cycle
 
     void sendToProductionValidation(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);

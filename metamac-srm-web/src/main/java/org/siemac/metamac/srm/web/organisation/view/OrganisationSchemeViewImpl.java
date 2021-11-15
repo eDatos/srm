@@ -6,6 +6,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -30,6 +31,7 @@ import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeCategor
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeOrganisationsPanel;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeVersionsSectionStack;
+import org.siemac.metamac.srm.web.shared.CommonSharedUtils;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -338,6 +340,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 copyOrganisationSchemeAskingCode(organisationSchemeDto.getUrn());
             }
         });
+        mainFormLayout.getLifeCycleReSendStreamMessage().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().reSendStreamMessageOrganisationScheme(organisationSchemeDto.getUrn());
+            }
+        });
     }
 
     private void createViewForm() {
@@ -349,7 +358,10 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         ViewTextItem urn = new ViewTextItem(OrganisationSchemeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(OrganisationSchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(OrganisationSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersForm.setFields(code, name, uriProvider, urn, urnProvider, version);
+        ViewTextItem publicationStreamStatus = new ViewTextItem(OrganisationSchemeDS.PUBLICATION_STREAM_STATUS, getConstants().lifeCycleStructuralResourceStreamMsgStatus());
+        publicationStreamStatus.setWidth(20);
+
+        identifiersForm.setFields(code, name, uriProvider, urn, urnProvider, version,publicationStreamStatus);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -566,6 +578,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         identifiersForm.setValue(OrganisationSchemeDS.URN_PROVIDER, organisationSchemeDto.getUrnProvider());
         identifiersForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeDto.getVersionLogic());
         identifiersForm.setValue(OrganisationSchemeDS.NAME, organisationSchemeDto.getName());
+        identifiersForm.getItem(OrganisationSchemeDS.PUBLICATION_STREAM_STATUS)
+                .setIcons(StreamMessageStatusEnum.PENDING.equals(organisationSchemeDto.getStreamMessageStatus()) ? null : CommonSharedUtils.getPublicationStreamStatusIcon(organisationSchemeDto.getStreamMessageStatus()));
 
         // Content descriptors
         contentDescriptorsForm.setValue(OrganisationSchemeDS.TYPE, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));

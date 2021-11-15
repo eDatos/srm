@@ -27,6 +27,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected MainFormLayoutButton export;
     protected MainFormLayoutButton copy;
     protected MainFormLayoutButton copyKeepingMaintainer;
+    protected MainFormLayoutButton lifeCycleReSendStreamMessage;
     // protected AnnounceToolStripButton announce;
 
     protected String               urn;
@@ -60,6 +61,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         export = new MainFormLayoutButton(getConstants().actionExportSdmxMl(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         copy = new MainFormLayoutButton(getConstants().actionCopy(), GlobalResources.RESOURCE.copy().getURL());
         copyKeepingMaintainer = new MainFormLayoutButton(getConstants().actionCopy(), GlobalResources.RESOURCE.copy().getURL());
+        lifeCycleReSendStreamMessage = new MainFormLayoutButton(getConstants().lifeCycleReSendStreamMessage(), GlobalResources.RESOURCE.reload().getURL());
         // announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
 
         toolStrip.addButton(productionValidation);
@@ -73,6 +75,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         toolStrip.addButton(export);
         toolStrip.addButton(copy);
         toolStrip.addButton(copyKeepingMaintainer);
+        toolStrip.addButton(lifeCycleReSendStreamMessage);
         // toolStrip.addButton(announce);
     }
 
@@ -140,6 +143,10 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         return copyKeepingMaintainer;
     }
 
+    public HasClickHandlers getLifeCycleReSendStreamMessage() {
+        return lifeCycleReSendStreamMessage;
+    }
+
     // public HasClickHandlers getAnnounce() {
     // return announce;
     // }
@@ -156,6 +163,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         export.hide();
         copy.hide();
         copyKeepingMaintainer.hide();
+        lifeCycleReSendStreamMessage.hide();
         // announce.hide();
     }
 
@@ -184,8 +192,10 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus)) {
             showPublishExternallyButton();
             showCreateTemporalVersionButton();
+            showLifeCycleReSendStreamMessage();
         } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
             showCreateTemporalVersionButton();
+            showLifeCycleReSendStreamMessage();
             // Only cancel scheme validity if it has not been canceled previously
             if (validTo == null) {
                 showCancelValidityButton();
@@ -223,6 +233,8 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected abstract void showCopyButton();
 
     protected abstract void showCopyKeepingMaintainerButton();
+
+    protected abstract void showLifeCycleReSendStreamMessage();
 
     // protected abstract void showAnnounceButton();
 }

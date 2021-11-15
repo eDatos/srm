@@ -66,6 +66,9 @@ import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
+import org.siemac.metamac.srm.core.serviceapi.StreamMessagingService;
+import org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -155,6 +158,12 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     private DataStructureDefinitionsCopyCallback    dataStructureDefinitionsCopyCallback;
 
     @Autowired
+    private DsdStreamMessagingCallbackImpl          dsdSchemeStreamMessagingCallback;
+
+    @Autowired
+    private StreamMessagingService                  streamMessagingService;
+
+    @Autowired
     private StructureVersionRepository              structureVersionRepository;
 
     @Autowired
@@ -229,6 +238,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         dataStructureDefinitionVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
         dataStructureDefinitionVersion.setAutoOpen(Boolean.TRUE);
+        dataStructureDefinitionVersion.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
 
         return dataStructureDefinitionVersion;
     }
@@ -570,6 +580,11 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     @Override
     public DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishExternally(ctx, urn);
+    }
+
+    @Override
+    public SendStreamMessageResult resendDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
+        return streamMessagingService.sendMessage(dataStructureDefinitionVersion, dsdSchemeStreamMessagingCallback);
     }
 
     @Override

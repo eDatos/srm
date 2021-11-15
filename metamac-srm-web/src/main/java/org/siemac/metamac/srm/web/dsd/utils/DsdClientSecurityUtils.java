@@ -96,6 +96,10 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canPublishDsdExternally(MetamacSrmWeb.getCurrentUser(), operationCode);
     }
 
+    public static boolean canResendDsdStreamMessage(String operationCode) {
+        return SharedDsdSecurityUtils.canResendDsd(MetamacSrmWeb.getCurrentUser(), operationCode);
+    }
+
     public static boolean canCopyDsd(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
         return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser()) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer);
