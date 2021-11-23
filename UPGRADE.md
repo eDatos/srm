@@ -8,6 +8,14 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
+## 2.10.0 a x.y.z
+
+* Es necesario ejecutar los scripts SQL del proyecto statistic-sdmx-srm contenidos en la carpeta
+  ```shell
+  etc/changes-from-release/2.5.1/db/srm/postgresql/20211123_add-international-string-index.sql
+  etc/changes-from-release/2.5.1/db/srm/postgresql/20211123_add-string-indexes.sql
+  ```
+
 ## 2.9.1 a 2.10.0
 
 * Es necesario ejecutar los scripts SQL contenidos en la carpeta

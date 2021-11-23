@@ -28,7 +28,7 @@
         <metamac-notifications-rest-internal-api.version>3.1.0</metamac-notifications-rest-internal-api.version>
         <metamac-rest-api.version>2.1.0</metamac-rest-api.version>
         <statistic-sdmx-v2_1.version>2.0.0</statistic-sdmx-v2_1.version>
-        <statistic-sdmx-srm.version>2.5.1</statistic-sdmx-srm.version>
+        <statistic-sdmx-srm.version>2.5.2-SNAPSHOT</statistic-sdmx-srm.version>
 
         <!-- WEB -->
 		<jstl.version>1.2</jstl.version>
