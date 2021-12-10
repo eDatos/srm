@@ -6382,6 +6382,103 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testCreateOrUpVariableElementRenderingColor() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String renderingColor = "#FFFFFF";
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+        variableElement.setRenderingColor(renderingColor);
+
+        // Create
+        VariableElement variableElementCreated = codesService.createVariableElement(ctx, variableElement);
+        String urn = variableElementCreated.getIdentifiableArtefact().getUrn();
+
+        // Validate
+        assertNotNull(urn);
+        VariableElement variableElementRetrieved = codesService.retrieveVariableElementByUrn(ctx, urn);
+        assertEquals(renderingColor, variableElementRetrieved.getRenderingColor());
+
+        renderingColor = "#AAA";
+        variableElementRetrieved.setRenderingColor(renderingColor);
+        variableElementRetrieved.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        // Update
+        VariableElement variableElementUpdated = codesService.updateVariableElement(ctx, variableElementRetrieved);
+
+        // Validate
+        assertEquals(renderingColor, variableElementUpdated.getRenderingColor());
+
+        renderingColor = null;
+        variableElementRetrieved.setRenderingColor(renderingColor);
+        variableElementRetrieved.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        // Update
+        variableElementUpdated = codesService.updateVariableElement(ctx, variableElementRetrieved);
+
+        // Validate
+        assertEquals(renderingColor, variableElementUpdated.getRenderingColor());
+
+        renderingColor = "";
+        variableElementRetrieved.setRenderingColor(renderingColor);
+        variableElementRetrieved.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        // Update
+        variableElementUpdated = codesService.updateVariableElement(ctx, variableElementRetrieved);
+
+        // Validate
+        assertEquals(renderingColor, variableElementUpdated.getRenderingColor());
+    }
+
+    @Test
+    public void testVariableElementErrorRenderingColor() throws Exception {
+
+        {
+            String renderingColor = "TEST!";
+            Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+            VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+            variableElement.setRenderingColor(renderingColor);
+            try {
+                codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+                fail("duplicated code");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_RENDERING_COLOR_NOT_VALID, 1, new String[]{renderingColor}, e.getExceptionItems().get(0));
+            }
+        }
+
+        {
+            String renderingColor = "#ABCDEFG";
+            Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+            VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+            variableElement.setRenderingColor(renderingColor);
+            try {
+                codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+                fail("duplicated code");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_RENDERING_COLOR_NOT_VALID, 1, new String[]{renderingColor}, e.getExceptionItems().get(0));
+            }
+        }
+
+        {
+            String renderingColor = "#12345";
+            Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+            VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+            variableElement.setRenderingColor(renderingColor);
+            try {
+                codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+                fail("duplicated code");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_RENDERING_COLOR_NOT_VALID, 1, new String[]{renderingColor}, e.getExceptionItems().get(0));
+            }
+        }
+
+    }
+
+    @Test
     public void testCreateVariableElementErrorVariableWorld() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_7_WORLD);
         assertTrue(VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()));

@@ -222,17 +222,17 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         CodeResourceInternal target = new CodeResourceInternal();
         toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target, fields);
-        
+
         setVisibleFields(source, target, fields);
-        
+
         return target;
     }
-    
+
     private void setVisibleFields(CodeMetamac source, CodeResourceInternal target, Set<String> fields) {
         if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
             target.setVariableElement(toResource(source.getVariableElement()));
         }
-        
+
         target.setOpen(null);
         target.setOrder(null);
     }
@@ -251,7 +251,8 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     protected void setVisibleFields(ItemResult source, CodeResourceInternal target, String variableID, Set<String> fields) {
-        target.setOrder(SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_ORDER) ? SrmServiceUtils.getCodeItemResultOrder(source) + 1 : null); // add 1 to start in 1, instead of 0
+        target.setOrder(SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_ORDER) ? SrmServiceUtils.getCodeItemResultOrder(source) + 1 : null); // add 1 to start in 1, instead
+                                                                                                                                                                       // of 0
         target.setOpen(SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_OPENNES) ? SrmServiceUtils.getCodeItemResultOpenness(source) : null);
         if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
             target.setVariableElement(toResource(variableID, ((CodeMetamacResultExtensionPoint) source.getExtensionPoint()).getVariableElement()));
@@ -436,6 +437,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setReplacedBy(toResource(source.getReplacedByVariableElement()));
         target.setReplaceTo(toVariableElementReplaceTo(source));
         target.setVariable(toResource(source.getVariable()));
+        target.setRenderingColor(source.getRenderingColor());
         return target;
     }
 
@@ -1072,6 +1074,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         public Object getGeographicalGranularity();
         public String getGeographicalGranularityUrn();
         public ItemResourceInternal getGeographicalGranularityAsResource();
+
+        private ItemResult geographicalGranularity;
+
+        // TODO EDATOS-3482 Revisar si es necesario añadir el método a la interfaz y la implementación
+        public String getRenderingColor();
     }
 
     private class VariableElementMetadataExtractionEntity implements VariableElementMetadataExtraction {
@@ -1126,6 +1133,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         public ItemResourceInternal getGeographicalGranularityAsResource() {
             return toResource(variableElement.getGeographicalGranularity());
         }
+
+        @Override
+        public String getRenderingColor() {
+            return variableElement.getRenderingColor();
+        }
     }
 
     private class VariableElementMetadataExtractionResult implements VariableElementMetadataExtraction {
@@ -1179,6 +1191,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         @Override
         public ItemResourceInternal getGeographicalGranularityAsResource() {
             return toResource(variableElement.getGeographicalGranularity());
+        }
+
+        @Override
+        public String getRenderingColor() {
+            return variableElement.getRederingColor();
         }
     }
 

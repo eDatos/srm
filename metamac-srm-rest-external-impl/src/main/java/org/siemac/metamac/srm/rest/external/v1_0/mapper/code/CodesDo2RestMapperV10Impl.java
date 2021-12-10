@@ -214,22 +214,20 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         CodeResource target = new CodeResource();
         toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), target, fields);
-        
+
         setVisibleFields(source, target, fields);
-        
+
         return target;
     }
-    
-    
+
     private void setVisibleFields(CodeMetamac source, CodeResource target, Set<String> fields) {
         if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
             target.setVariableElement(toResource(source.getVariableElement()));
         }
-        
+
         target.setOpen(null);
         target.setOrder(null);
     }
-    
 
     private CodeResource toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion, String variableID, Set<String> fields) {
         if (source == null) {
@@ -427,6 +425,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setReplacedBy(toResource(source.getReplacedByVariableElement()));
         target.setReplaceTo(toVariableElementReplaceTo(source));
         target.setVariable(toResource(source.getVariable()));
+        target.setRenderingColor(source.getRenderingColor());
         return target;
     }
 
@@ -1006,6 +1005,8 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         public Object getGeographicalGranularity();
         public String getGeographicalGranularityUrn();
         public ItemResource getGeographicalGranularityAsResource();
+        // TODO EDATOS-3482 Revisar si es necesario añadir el método a la interfaz y la implementación
+        public String getRenderingColor();
     }
 
     private class VariableElementMetadataExtractionEntity implements VariableElementMetadataExtraction {
@@ -1060,6 +1061,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         public ItemResource getGeographicalGranularityAsResource() {
             return toResource(variableElement.getGeographicalGranularity());
         }
+
+        @Override
+        public String getRenderingColor() {
+            return variableElement.getRenderingColor();
+        }
     }
 
     private class VariableElementMetadataExtractionResult implements VariableElementMetadataExtraction {
@@ -1113,6 +1119,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         @Override
         public ItemResource getGeographicalGranularityAsResource() {
             return toResource(variableElement.getGeographicalGranularity());
+        }
+
+        @Override
+        public String getRenderingColor() {
+            return variableElement.getRederingColor();
         }
     }
 

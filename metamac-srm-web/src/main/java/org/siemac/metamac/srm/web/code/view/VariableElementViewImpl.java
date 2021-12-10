@@ -28,6 +28,7 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+import org.siemac.metamac.web.common.client.widgets.CustomColorPicker;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.DoubleItem;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -55,30 +56,30 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementUiHandlers> implements VariableElementPresenter.VariableElementView {
 
-    private VLayout panel;
-    private VariableElementMainFormLayout mainFormLayout;
+    private VLayout                                      panel;
+    private VariableElementMainFormLayout                mainFormLayout;
 
     // View forms
-    private GroupDynamicForm identifiersForm;
-    private GroupDynamicForm contentDescriptorsForm;
-    private GroupDynamicForm diffusionDescriptorsForm;
-    private GroupDynamicForm geographicalInformationForm;
-    private GroupDynamicForm annotationsForm;
+    private GroupDynamicForm                             identifiersForm;
+    private GroupDynamicForm                             contentDescriptorsForm;
+    private GroupDynamicForm                             diffusionDescriptorsForm;
+    private GroupDynamicForm                             geographicalInformationForm;
+    private GroupDynamicForm                             annotationsForm;
 
     // Edition forms
-    private GroupDynamicForm identifiersEditionForm;
-    private GroupDynamicForm contentDescriptorsEditionForm;
-    private GroupDynamicForm diffusionDescriptorsEditionForm;
-    private GroupDynamicForm geographicalInformationEditionForm;
-    private GroupDynamicForm annotationsEditionForm;
+    private GroupDynamicForm                             identifiersEditionForm;
+    private GroupDynamicForm                             contentDescriptorsEditionForm;
+    private GroupDynamicForm                             diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                             geographicalInformationEditionForm;
+    private GroupDynamicForm                             annotationsEditionForm;
 
     private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
 
     // Variable element operations
-    private CustomSectionStack operationsSectionStack;
-    private VariableElementOperationLayout variableElementOperationsLayout;
+    private CustomSectionStack                           operationsSectionStack;
+    private VariableElementOperationLayout               variableElementOperationsLayout;
 
-    private VariableElementDto variableElementDto;
+    private VariableElementDto                           variableElementDto;
 
     @Inject
     public VariableElementViewImpl() {
@@ -267,7 +268,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         RelatedResourceLinkItem variable = new RelatedResourceLinkItem(VariableElementDS.VARIABLE, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
-        contentDescriptorsForm.setFields(variable);
+        CustomColorPicker customColorPicker = new CustomColorPicker(VariableElementDS.RENDERING_COLOR, getConstants().variableElementRenderingColor());
+        contentDescriptorsForm.setFields(variable, customColorPicker);
 
         // Geographical information
         geographicalInformationForm = new GroupDynamicForm(getConstants().formGeographicalInformation());
@@ -312,7 +314,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         RelatedResourceLinkItem variable = new RelatedResourceLinkItem(VariableElementDS.VARIABLE, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
-        contentDescriptorsEditionForm.setFields(variable);
+        CustomColorPicker customColorPicker = new CustomColorPicker(VariableElementDS.RENDERING_COLOR, getConstants().variableElementRenderingColor(), Boolean.TRUE);
+        contentDescriptorsEditionForm.setFields(variable, customColorPicker);
 
         // Geographical information
         geographicalInformationEditionForm = new GroupDynamicForm(getConstants().formGeographicalInformation());
@@ -356,6 +359,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Content descriptors
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(VariableElementDS.VARIABLE)).setRelatedResource(variableElementDto.getVariable());
+        ((CustomColorPicker) contentDescriptorsForm.getItem(VariableElementDS.RENDERING_COLOR)).setColor(variableElementDto.getRenderingColor());
 
         // Geographical information
         ((RelatedResourceLinkItem) geographicalInformationForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setRelatedResource(variableElementDto.getGeographicalGranularity());
@@ -382,6 +386,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Content descriptors
         ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(VariableElementDS.VARIABLE)).setRelatedResource(variableElementDto.getVariable());
+        ((CustomColorPicker) contentDescriptorsEditionForm.getItem(VariableElementDS.RENDERING_COLOR)).setColor(variableElementDto.getRenderingColor());
 
         // Geographical information
         ((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY))
@@ -406,6 +411,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         variableElementDto.setShortName(identifiersEditionForm.getValueAsInternationalStringDto(VariableElementDS.SHORT_NAME));
 
         // Content descriptors
+        variableElementDto.setRenderingColor(((CustomColorPicker) contentDescriptorsEditionForm.getItem(VariableElementDS.RENDERING_COLOR)).getColor());
 
         // Geographical information
         variableElementDto.setGeographicalGranularity(
