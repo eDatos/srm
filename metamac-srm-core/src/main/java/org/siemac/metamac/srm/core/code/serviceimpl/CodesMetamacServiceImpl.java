@@ -3365,6 +3365,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         }
 
+        // rendering color
+        if (header.isRenderingColorSetted()) {
+            String renderingColor = columns[header.getRenderingColorPosition()];
+            if (!StringUtils.isBlank(renderingColor)) {
+                variableElement.setRenderingColor(renderingColor);
+            }
+        }
+
         // Do not persist if any error ocurrs
         if (!CollectionUtils.isEmpty(exceptionItems)) {
             return null;

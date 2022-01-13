@@ -6,6 +6,7 @@ public class ImportationVariableElementsTsvHeader {
     private int                    codePosition;
     private InternationalStringTsv shortName;
     private int                    geographicalGranularityPosition = -1;
+    private int                    renderingColorPosition          = -1;
 
     public int getColumnsSize() {
         return columnsSize;
@@ -41,5 +42,17 @@ public class ImportationVariableElementsTsvHeader {
 
     public boolean isGeographicalGranularitySetted() {
         return geographicalGranularityPosition != -1;
+    }
+
+    public int getRenderingColorPosition() {
+        return renderingColorPosition;
+    }
+
+    public void setRenderingColorPosition(int renderingColorPosition) {
+        this.renderingColorPosition = renderingColorPosition;
+    }
+
+    public boolean isRenderingColorSetted() {
+        return renderingColorPosition != -1;
     }
 }

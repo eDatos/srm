@@ -15,7 +15,6 @@ public class VariableElementResult extends IdentifiableArtefactResult {
     private Double                    latitude;
     private Double                    longitude;
     private ItemResult                geographicalGranularity;
-    // TODO EDATOS-3482 Revisar si es necesario añadir este atributo y el getter/setter asociado
     private String                    rederingColor;
 
     public Long getIdDatabase() {

@@ -1075,8 +1075,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         public String getGeographicalGranularityUrn();
         public ItemResourceInternal getGeographicalGranularityAsResource();
 
-        private ItemResult geographicalGranularity;
-
         // TODO EDATOS-3482 Revisar si es necesario añadir el método a la interfaz y la implementación
         public String getRenderingColor();
     }

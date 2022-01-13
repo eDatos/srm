@@ -36,6 +36,7 @@ public class SrmConstants {
     public static final String             TSV_HEADER_LEVEL                                                       = "level";
     public static final String             TSV_HEADER_ORDER                                                       = "order";
     public static final String             TSV_HEADER_GEOGRAPHICAL_GRANULARITY                                    = "geographical_granularity";
+    public static final String             TSV_HEADER_RENDERING_COLOR                                             = "rendering_color";
     public static final String             TSV_HEADER_PLURAL_NAME                                                 = "plural_name";
     public static final String             TSV_HEADER_ACRONYM                                                     = "acronym";
     public static final String             TSV_HEADER_DESCRIPTION_SOURCE                                          = "description_source";
@@ -48,7 +49,7 @@ public class SrmConstants {
     public static final String             TSV_HEADER_REPRESENTATION_SUB_TYPE                                     = "type";
     public static final String             TSV_HEADER_REPRESENTATION_SUB_VALUE                                    = "value";
     public static final String             TSV_HEADER_CONCEPT_EXTENDS                                             = "concept_extends";
-    public static final String             TSV_HEADER_SDMX_RELATED_ARTEFACT                                                   = "sdmx_role";
+    public static final String             TSV_HEADER_SDMX_RELATED_ARTEFACT                                       = "sdmx_role";
 
     public static final String             TSV_EXPORTATION_ENCODING                                               = "UTF-8";
 

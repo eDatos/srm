@@ -61,7 +61,8 @@ public class TsvImportationUtils {
     // ---------------------------------------------------------------------------------------------------------------
 
     public static ImportationVariableElementsTsvHeader parseTsvHeaderToImportVariableElements(String line, List<MetamacExceptionItem> exceptions) throws MetamacException {
-        List<String> headersExpected = Arrays.asList(SrmConstants.TSV_HEADER_CODE, SrmConstants.TSV_HEADER_GEOGRAPHICAL_GRANULARITY, SrmConstants.TSV_HEADER_SHORT_NAME);
+        List<String> headersExpected = Arrays.asList(SrmConstants.TSV_HEADER_CODE, SrmConstants.TSV_HEADER_GEOGRAPHICAL_GRANULARITY, SrmConstants.TSV_HEADER_SHORT_NAME,
+                SrmConstants.TSV_HEADER_RENDERING_COLOR);
 
         String[] headerColumns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
         if (headerColumns == null || headerColumns.length < headersExpected.size()) {
@@ -91,6 +92,9 @@ public class TsvImportationUtils {
                 if (header.getShortName().isEndPositionSetted()) {
                     headerExpectedIndex++;
                 }
+            } else if (SrmConstants.TSV_HEADER_RENDERING_COLOR.equals(columnName)) {
+                header.setRenderingColorPosition(i);
+                headerExpectedIndex++;
             } else {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, ServiceExceptionParameters.createCodeImportation(headerExpected)));
             }
