@@ -55,6 +55,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.io.FileUtils;
+import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceapi.MiscMetamacService;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
@@ -155,8 +156,6 @@ import com.vividsolutions.jts.geom.Polygon;
 @Service("codesMetamacService")
 public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
-    private static final String                 HEX_COLOR_REGULAR_EXPRESSION = "^#(?:[0-9a-fA-F]{3}){1,2}$";
-
     @Autowired
     private BaseService                         baseService;
 
@@ -226,7 +225,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager                     entityManager;
 
-    private static Logger                       logger                       = LoggerFactory.getLogger(CodesMetamacService.class);
+    private static Logger                       logger = LoggerFactory.getLogger(CodesMetamacService.class);
 
     public CodesMetamacServiceImpl() {
     }
@@ -2700,8 +2699,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Check that the rendering value is correct
-        // TODO EDATOS-3482 Mover al core-common?
-        if ((StringUtils.isNotBlank(variableElement.getRenderingColor())) && (!variableElement.getRenderingColor().matches(CodesMetamacServiceImpl.HEX_COLOR_REGULAR_EXPRESSION))) {
+        if ((StringUtils.isNotBlank(variableElement.getRenderingColor())) && (!CoreCommonUtil.matchHexColor(variableElement.getRenderingColor()))) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_RENDERING_COLOR_NOT_VALID).withMessageParameters(variableElement.getRenderingColor())
                     .build();
         }
