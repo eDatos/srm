@@ -494,6 +494,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VariableElementResourceInternal target = new VariableElementResourceInternal();
         toResource(source.getIdentifiableArtefact(), SrmRestConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(source), toVariableElementManagementApplicationLink(source), target, false);
         target.setName(toInternationalString(source.getShortName()));
+        target.setRenderingColor(source.getRenderingColor());
 
         if (source.getGeographicalGranularity() != null) {
             ItemResourceInternal resource = toResource(source.getGeographicalGranularity());
