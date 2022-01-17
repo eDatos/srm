@@ -554,6 +554,7 @@ Application CodesMetamac {
 			"Variable elements that are replaced by this one"
 			- Bag<@VariableElement> replaceToVariableElements cascade="none" fetch="lazy" <-> replacedByVariableElement;
 			
+			String renderingColor nullable;
 			// Geographical information
 			Double latitude nullable;
 			Double longitude nullable;

@@ -102,7 +102,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT ve.ID as VARIABLE_ELEMENT_ID, a.URN, a.CODE, ls.LOCALE as SHORT_NAME_LOCALE, ls.LABEL as SHORT_NAME_LABEL ");
+            sb.append("SELECT ve.ID as VARIABLE_ELEMENT_ID, a.URN, a.CODE, ls.LOCALE as SHORT_NAME_LOCALE, ls.LABEL as SHORT_NAME_LABEL, ve.RENDERING_COLOR ");
             sb.append("FROM TB_M_VARIABLE_ELEMENTS ve ");
             sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ve.IDENTIFIABLE_ARTEFACT_FK = a.ID ");
             if (selection.isReturnOnlyGeographicalVariableElements()) {
@@ -307,6 +307,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             String label = getString(source[i++]);
             target.getShortName().put(locale, label);
         }
+        target.setRederingColor(getString(source[i++]));
     }
 
     private void variableElementGeoResultSqlToVariableElementResult(Object[] source, VariableElementResult target, VariableElementResultSelection selection) throws MetamacException {
