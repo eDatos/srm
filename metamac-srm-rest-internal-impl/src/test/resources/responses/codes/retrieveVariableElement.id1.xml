@@ -83,4 +83,5 @@
         </cdomain:name>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01</sr:managementAppLink>
     </sr:variable>
+    <sr:renderingColor>#FFAA55</sr:renderingColor>
 </sr:variableElement>

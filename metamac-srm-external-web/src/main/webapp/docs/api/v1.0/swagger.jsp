@@ -2963,6 +2963,12 @@
                 {"$ref":"#/components/parameters/offsetParam"},
                 {"$ref":"#/components/parameters/variableElementQueryParam"},
                 {"$ref":"#/components/parameters/variableElementOrderByParam"},
+                {
+                  "name":"fields",
+                  "in":"query",
+                  "type":"string",
+                  "description":"Campos adicionales que se desean mostrar en la respuesta. Los valores pueden ser: <ul><li>+renderingColor: muestra el color de representación</li></ul> Ejemplo: fields=\"+renderingColor\""
+                }
             ],
             "responses":{
                "200":{

@@ -556,7 +556,7 @@ public class TsvExportationUtils {
 
     private static void writeVariableElementRenderingColor(OutputStreamWriter writer, VariableElementResult variableElementResult) throws IOException {
         writer.write(SrmConstants.TSV_SEPARATOR);
-        String renderingColor = variableElementResult.getRederingColor();
+        String renderingColor = variableElementResult.getRenderingColor();
         if (renderingColor != null) {
             writer.write(renderingColor);
         }

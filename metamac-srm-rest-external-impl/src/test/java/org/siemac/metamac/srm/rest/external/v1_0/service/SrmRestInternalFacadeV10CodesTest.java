@@ -56,6 +56,7 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Variable;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElementResource;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElements;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableFamily;
@@ -377,7 +378,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         Codes codes = getSrmRestInternalFacadeClientXml().findCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null, null, null, "+variableElement");
         assertNotNull(codes.getCodes().get(0).getVariableElement());
     }
-    
+
     @Test
     public void testFindCodesWithDescriptionExplicit() throws Exception {
         resetMocks();
@@ -433,7 +434,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testFindCodesRetrieveAllXmlWithFields() throws Exception {
-        String FIELDS = SrmRestConstants.FIELD_INCLUDE_OPENNES + "," + SrmRestConstants.FIELD_INCLUDE_ORDER + "," + SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT + "," + SrmRestConstants.FIELD_INCLUDE_DESCRIPTION;
+        String FIELDS = SrmRestConstants.FIELD_INCLUDE_OPENNES + "," + SrmRestConstants.FIELD_INCLUDE_ORDER + "," + SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT + ","
+                + SrmRestConstants.FIELD_INCLUDE_DESCRIPTION;
         String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, FIELDS);
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodesRetrieveAllWithFields.xml");
 
@@ -753,11 +755,27 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         String limit = "4";
         String offset = "4";
         String variableID = "variable01";
-        // Find
-        VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
 
-        assertNotNull(variableElements);
-        assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
+        {
+            String fields = null;
+
+            // Find
+            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset, fields);
+
+            assertNotNull(variableElements);
+            assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
+            assertVariableElementRenderingColorEquals(null, variableElements);
+        }
+        {
+            String fields = "+renderingColor";
+
+            // Find
+            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset, fields);
+
+            assertNotNull(variableElements);
+            assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
+            assertVariableElementRenderingColorEquals("#FFAA55", variableElements);
+        }
     }
 
     @Test
@@ -775,20 +793,55 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         String limit = null;
         String offset = null;
         String variableID = "variable01";
+
         {
             String query = null;
-            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
+            String fields = null;
+            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset, fields);
             assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
+            assertVariableElementRenderingColorEquals(null, variableElements);
+        }
+        resetMocks();
+        {
+            String query = null;
+            String fields = "+renderingColor";
+            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset, fields);
+            assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
+            assertVariableElementRenderingColorEquals("#FFAA55", variableElements);
         }
         resetMocks();
         {
             String query = "ID IN ('code1', 'code2')";
-            getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
+            String fields = null;
+            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset, fields);
+            assertVariableElementRenderingColorEquals(null, variableElements);
+        }
+        resetMocks();
+        {
+            String query = "ID IN ('code1', 'code2')";
+            String fields = "+renderingColor";
+            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset, fields);
+            assertVariableElementRenderingColorEquals("#FFAA55", variableElements);
         }
         resetMocks();
         {
             String query = "ID EQ 'code1'";
-            getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
+            String fields = null;
+            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset, fields);
+            assertVariableElementRenderingColorEquals(null, variableElements);
+        }
+        resetMocks();
+        {
+            String query = "ID EQ 'code1'";
+            String fields = "+renderingColor";
+            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset, fields);
+            assertVariableElementRenderingColorEquals("#FFAA55", variableElements);
+        }
+    }
+
+    private static void assertVariableElementRenderingColorEquals(String expectedRenderingColor, VariableElements variableElements) {
+        for (VariableElementResource variableElementResource : variableElements.getVariableElements()) {
+            assertEquals(expectedRenderingColor, variableElementResource.getRenderingColor());
         }
     }
 

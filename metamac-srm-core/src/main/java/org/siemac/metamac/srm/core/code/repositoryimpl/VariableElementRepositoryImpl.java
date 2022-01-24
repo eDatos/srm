@@ -307,7 +307,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             String label = getString(source[i++]);
             target.getShortName().put(locale, label);
         }
-        target.setRederingColor(getString(source[i++]));
+        target.setRenderingColor(getString(source[i++]));
     }
 
     private void variableElementGeoResultSqlToVariableElementResult(Object[] source, VariableElementResult target, VariableElementResultSelection selection) throws MetamacException {
