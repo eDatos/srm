@@ -25,8 +25,8 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public interface CodesDo2RestMapperV10 {
 
-    org.siemac.metamac.rest.structural_resources.v1_0.domain.Codelists toCodelists(PagedResult<CodelistVersionMetamac> sources, String agencyID, String resourceID, String query,
-            String orderBy, Integer limit);
+    org.siemac.metamac.rest.structural_resources.v1_0.domain.Codelists toCodelists(PagedResult<CodelistVersionMetamac> sources, String agencyID, String resourceID, String query, String orderBy,
+            Integer limit);
     org.siemac.metamac.rest.structural_resources.v1_0.domain.Codelist toCodelist(CodelistVersionMetamac source) throws MetamacException;
     Resource toResource(CodelistVersion source);
 
@@ -44,9 +44,9 @@ public interface CodesDo2RestMapperV10 {
     org.siemac.metamac.rest.structural_resources.v1_0.domain.Variable toVariable(Variable source) throws MetamacException;
     Resource toResource(Variable source);
 
-    org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElements toVariableElements(PagedResult<VariableElement> sources, String variableID, String query, String orderBy,
-            Integer limit);
-    org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query);
+    org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElements toVariableElements(PagedResult<VariableElement> sources, String variableID, String query, String orderBy, Integer limit,
+            Set<String> fields);
+    org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query, Set<String> fields);
     String toVariableElementsGeoJson(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
     VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
     String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);

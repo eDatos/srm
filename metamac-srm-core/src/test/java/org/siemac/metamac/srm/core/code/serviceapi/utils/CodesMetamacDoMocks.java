@@ -229,6 +229,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         mockIdentifiableArtefactFixedValues(target.getIdentifiableArtefact(), resourceID, null);
         target.getIdentifiableArtefact().setUrn(GeneratorUrnUtils.generateVariableElementUrn(target.getVariable(), target));
         target.getIdentifiableArtefact().setUrnProvider(target.getIdentifiableArtefact().getUrn());
+        target.setRenderingColor("#FFAA55");
         return target;
     }
 
@@ -249,6 +250,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.getShortName().putAll(mockInternationalStringResultFixedValues("shortName", resourceID));
         target.getAnnotations().add(mockAnnotationResultFixedValues("code1"));
         target.getAnnotations().add(mockAnnotationResultFixedValues("code2"));
+        target.setRenderingColor("#FFAA55");
         return target;
     }
 

@@ -47,8 +47,8 @@ public interface CodesDo2RestMapperV10 {
     ResourceInternal toResource(Variable source);
 
     org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements toVariableElements(PagedResult<VariableElement> sources, String variableID, String query, String orderBy,
-            Integer limit);
-    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query);
+            Integer limit, Set<String> fields);
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query, Set<String> fields);
     String toVariableElementsGeoJson(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
     VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
     String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);

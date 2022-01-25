@@ -5,7 +5,7 @@
     
     <!-- Database -->
     <!-- POSTGRESQL -->
-    <entry key="metamac.srm.db.url">jdbc:postgresql://teide.arte:5432/ARTE</entry>
+    <entry key="metamac.srm.db.url">jdbc:postgresql://192.168.10.30:5432/ARTE</entry>
     <entry key="metamac.srm.db.username">istac_metamac_srm_ci</entry>
     <entry key="metamac.srm.db.password">istac_metamac_srm_ci</entry>
     <entry key="metamac.srm.db.dialect">org.hibernate.dialect.PostgreSQLDialect</entry>

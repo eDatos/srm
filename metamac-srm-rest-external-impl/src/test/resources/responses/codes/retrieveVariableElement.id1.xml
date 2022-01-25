@@ -72,4 +72,5 @@
             <cdomain:text xml:lang="es">name-variable01 en Español</cdomain:text>
         </cdomain:name>
     </sr:variable>
+    <sr:renderingColor>#FFAA55</sr:renderingColor>
 </sr:variableElement>

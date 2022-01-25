@@ -15,7 +15,7 @@ public class VariableElementResult extends IdentifiableArtefactResult {
     private Double                    latitude;
     private Double                    longitude;
     private ItemResult                geographicalGranularity;
-    private String                    rederingColor;
+    private String                    renderingColor;
 
     public Long getIdDatabase() {
         return idDatabase;
@@ -69,11 +69,11 @@ public class VariableElementResult extends IdentifiableArtefactResult {
         this.geographicalGranularity = geographicalGranularity;
     }
 
-    public String getRederingColor() {
-        return rederingColor;
+    public String getRenderingColor() {
+        return renderingColor;
     }
 
-    public void setRederingColor(String rederingColor) {
-        this.rederingColor = rederingColor;
+    public void setRenderingColor(String renderingColor) {
+        this.renderingColor = renderingColor;
     }
 }
