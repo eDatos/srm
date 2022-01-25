@@ -1022,8 +1022,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         public Object getGeographicalGranularity();
         public String getGeographicalGranularityUrn();
         public ItemResource getGeographicalGranularityAsResource();
-        // TODO EDATOS-3482 Revisar si es necesario añadir el método a la interfaz y la implementación
-        public String getRenderingColor();
     }
 
     private class VariableElementMetadataExtractionEntity implements VariableElementMetadataExtraction {
@@ -1078,11 +1076,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         public ItemResource getGeographicalGranularityAsResource() {
             return toResource(variableElement.getGeographicalGranularity());
         }
-
-        @Override
-        public String getRenderingColor() {
-            return variableElement.getRenderingColor();
-        }
     }
 
     private class VariableElementMetadataExtractionResult implements VariableElementMetadataExtraction {
@@ -1136,11 +1129,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         @Override
         public ItemResource getGeographicalGranularityAsResource() {
             return toResource(variableElement.getGeographicalGranularity());
-        }
-
-        @Override
-        public String getRenderingColor() {
-            return variableElement.getRenderingColor();
         }
     }
 

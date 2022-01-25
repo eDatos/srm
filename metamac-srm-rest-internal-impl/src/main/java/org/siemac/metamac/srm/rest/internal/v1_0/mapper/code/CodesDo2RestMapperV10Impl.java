@@ -491,7 +491,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     private VariableElementResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
         return toResource(source, null);
     }
-    
+
     private VariableElementResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.VariableElement source, Set<String> fields) {
         if (source == null) {
             return null;
@@ -499,7 +499,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VariableElementResourceInternal target = new VariableElementResourceInternal();
         toResource(source.getIdentifiableArtefact(), SrmRestConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(source), toVariableElementManagementApplicationLink(source), target, false);
         target.setName(toInternationalString(source.getShortName()));
-        
+
         if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_RENDERING_COLOR)) {
             target.setRenderingColor(source.getRenderingColor());
         }
@@ -511,7 +511,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         return target;
     }
-    
+
     private VariableElementResourceInternal toResource(String variableID, org.siemac.metamac.srm.core.code.domain.VariableElementResult source) {
         return toResource(variableID, source, null);
     }
@@ -524,7 +524,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VariableElementResourceInternal target = new VariableElementResourceInternal();
         toResource(source, SrmRestConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(variableID, source), toVariableElementManagementApplicationLink(variableID, source), target, false);
         target.setName(toInternationalString(source.getShortName()));
-        
+
         if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_RENDERING_COLOR)) {
             target.setRenderingColor(source.getRenderingColor());
         }
@@ -1091,9 +1091,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         public Object getGeographicalGranularity();
         public String getGeographicalGranularityUrn();
         public ItemResourceInternal getGeographicalGranularityAsResource();
-
-        // TODO EDATOS-3482 Revisar si es necesario añadir el método a la interfaz y la implementación
-        public String getRenderingColor();
     }
 
     private class VariableElementMetadataExtractionEntity implements VariableElementMetadataExtraction {
@@ -1148,11 +1145,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         public ItemResourceInternal getGeographicalGranularityAsResource() {
             return toResource(variableElement.getGeographicalGranularity());
         }
-
-        @Override
-        public String getRenderingColor() {
-            return variableElement.getRenderingColor();
-        }
     }
 
     private class VariableElementMetadataExtractionResult implements VariableElementMetadataExtraction {
@@ -1206,11 +1198,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         @Override
         public ItemResourceInternal getGeographicalGranularityAsResource() {
             return toResource(variableElement.getGeographicalGranularity());
-        }
-
-        @Override
-        public String getRenderingColor() {
-            return variableElement.getRenderingColor();
         }
     }
 
