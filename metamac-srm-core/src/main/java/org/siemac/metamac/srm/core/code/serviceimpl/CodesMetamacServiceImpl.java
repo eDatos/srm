@@ -55,7 +55,6 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.io.FileUtils;
-import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceapi.MiscMetamacService;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
@@ -2698,11 +2697,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(exceptionItems).build();
         }
 
-        // Check that the rendering value is correct
-        if ((StringUtils.isNotBlank(variableElement.getRenderingColor())) && (!CoreCommonUtil.matchHexColor(variableElement.getRenderingColor()))) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_RENDERING_COLOR_NOT_VALID).withMessageParameters(variableElement.getRenderingColor())
-                    .build();
-        }
     }
 
     private void checkVariableElementGeographicalGranularity(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
