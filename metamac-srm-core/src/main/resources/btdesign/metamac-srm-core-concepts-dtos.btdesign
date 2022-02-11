@@ -29,6 +29,8 @@ Application DtosMetamacConceptDomain {
 			- @ConceptSchemeTypeEnum type required;
 			"Related operation, only when type is Operation"
 			- @ExternalItemDto relatedOperation;
+			"Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 		}		
 		
 		"Dto for ConceptMetamac"

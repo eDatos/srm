@@ -51,6 +51,7 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
         }
         OrganisationSchemeMetamacBasicDto target = new OrganisationSchemeMetamacBasicDto();
         target.setType(source.getOrganisationSchemeType());
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
         itemSchemeVersionDoToItemSchemeBasicDto(source, source.getLifeCycleMetadata(), target);
         return target;
     }

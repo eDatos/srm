@@ -41,6 +41,7 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
             return null;
         }
         CategorySchemeMetamacBasicDto target = new CategorySchemeMetamacBasicDto();
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
         itemSchemeVersionDoToItemSchemeBasicDto(source, source.getLifeCycleMetadata(), target);
         return target;
     }

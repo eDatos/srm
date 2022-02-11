@@ -79,6 +79,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
 
         DataStructureDefinitionMetamacBasicDto target = new DataStructureDefinitionMetamacBasicDto();
         target.setStatisticalOperation(externalItemStatisticalOperationsToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getStatisticalOperation()));
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
         structureVersionDoToStructureBasicDto(source, source.getLifeCycleMetadata(), target);
         return target;
     }

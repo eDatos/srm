@@ -19,6 +19,8 @@ Application DtosMetamacCategoryDomain {
 		
 		"Dto for CategorySchemeMetamac"
 		DataTransferObject CategorySchemeMetamacBasicDto extends @ItemSchemeMetamacBasicDto {
+		    "Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 		}				
 
 		"Dto for CategoryMetamac"

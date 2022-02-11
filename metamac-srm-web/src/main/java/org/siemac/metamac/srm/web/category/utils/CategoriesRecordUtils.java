@@ -13,6 +13,7 @@ public class CategoriesRecordUtils extends org.siemac.metamac.srm.web.client.uti
         CategorySchemeRecord record = new CategorySchemeRecord();
         record = (CategorySchemeRecord) getItemSchemeRecord(record, categorySchemeDto, categorySchemeDto.getLifeCycle());
         record.setCategorySchemeBasicDto(categorySchemeDto);
+        record.setStreamMessageStatus(categorySchemeDto.getStreamMessageStatus());
         return record;
     }
 

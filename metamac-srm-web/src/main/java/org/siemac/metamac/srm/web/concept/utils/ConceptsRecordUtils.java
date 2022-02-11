@@ -19,6 +19,7 @@ public class ConceptsRecordUtils extends org.siemac.metamac.srm.web.client.utils
         record.setType(CommonUtils.getConceptSchemeTypeName(conceptSchemeDto.getType()));
         record.setStatisticalOperation(conceptSchemeDto.getRelatedOperation());
         record.setConceptSchemeBasicDto(conceptSchemeDto);
+        record.setStreamMessageStatus(conceptSchemeDto.getStreamMessageStatus());
         return record;
     }
 
