@@ -2,10 +2,13 @@ package org.siemac.metamac.srm.web.code.model.record;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.web.client.model.record.VersionableResourceRecord;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
+import static org.siemac.metamac.srm.web.shared.CommonSharedUtils.getPublicationStreamStatusIconUrl;
 
 public class CodelistRecord extends VersionableResourceRecord {
 
@@ -22,6 +25,10 @@ public class CodelistRecord extends VersionableResourceRecord {
 
     public void setCodelistBasicDto(CodelistMetamacBasicDto codelistMetamacDto) {
         setAttribute(CodelistDS.DTO, codelistMetamacDto);
+    }
+
+    public void setStreamMessageStatus(StreamMessageStatusEnum value) {
+        setAttribute(CodelistDS.PUBLICATION_STREAM_STATUS, getPublicationStreamStatusIconUrl(value));
     }
 
     public ProcStatusEnum getProcStatus() {

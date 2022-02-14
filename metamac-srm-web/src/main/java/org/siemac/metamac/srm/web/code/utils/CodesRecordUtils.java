@@ -39,6 +39,7 @@ public class CodesRecordUtils extends org.siemac.metamac.srm.web.client.utils.Re
         record.setIsRecommended(BooleanWebUtils.getBooleanLabel(codelistDto.getIsRecommended()));
         record.setVariable(codelistDto.getVariable());
         record.setCodelistBasicDto(codelistDto);
+        record.setStreamMessageStatus(codelistDto.getStreamMessageStatus());
         return record;
     }
 

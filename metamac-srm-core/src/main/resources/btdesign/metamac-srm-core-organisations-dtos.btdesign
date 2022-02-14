@@ -21,6 +21,8 @@ Application DtosMetamacOrganisationDomain {
 		DataTransferObject OrganisationSchemeMetamacBasicDto extends @ItemSchemeMetamacBasicDto {
 			"Type"
 			- @OrganisationSchemeTypeEnum type;
+			"Stream message status"
+			- @StreamMessageStatusEnum streamMessageStatus;
 		}		
 				
 		"Dto for OrganisationMetamac"

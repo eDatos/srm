@@ -45,6 +45,8 @@ Application DtosMetamacDsdDomain {
 		DataTransferObject DataStructureDefinitionMetamacBasicDto extends @StructureMetamacBasicDto {
 			"Statistical operation"
 			- @ExternalItemDto statisticalOperation;
+			"Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 		}
 		
 		"Dto for MeasureDimensionPrecisionDto"

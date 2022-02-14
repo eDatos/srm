@@ -33,7 +33,7 @@ public class CommonSharedUtils {
         return dimensionComponentDtos;
     }
 
-    public static FormItemIcon getPublicationStreamStatusIcon(StreamMessageStatusEnum status) {
+    public static String getPublicationStreamStatusIconUrl(StreamMessageStatusEnum status) {
         if (status == null) {
             return null;
         }
@@ -43,8 +43,12 @@ public class CommonSharedUtils {
             ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.SENT, GlobalResources.RESOURCE.success());
         }
 
+        return ICON_STREAM_MESSAGE_STATUS.get(status).getURL();
+    }
+
+    public static FormItemIcon getPublicationStreamStatusIcon(StreamMessageStatusEnum status) {
         FormItemIcon icon = new FormItemIcon();
-        icon.setSrc(ICON_STREAM_MESSAGE_STATUS.get(status).getURL());
+        icon.setSrc(getPublicationStreamStatusIconUrl(status));
 
         return icon;
     }
