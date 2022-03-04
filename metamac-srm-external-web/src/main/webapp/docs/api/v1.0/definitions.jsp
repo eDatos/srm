@@ -3847,6 +3847,13 @@
                      },
                      "description":"",
                      "$ref":"#/definitions/Resource"
+                  },
+                  "renderingColor":{
+                     "xml":{
+                        "namespace":"http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"
+                     },
+                     "description":"",
+                     "type":"string"
                   }
                }
             }
@@ -3867,7 +3874,35 @@
                         "namespace":"http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"
                      },
                      "description":"",
-                     "$ref":"#/definitions/Resource"
+                     "$ref":"#/definitions/VariableElementResource"
+                  }
+               }
+            }
+         ],
+         "description":""
+      },      
+      "VariableElementResource":{
+         "type":"object",
+         "title":"VariableElementResource",
+         "allOf":[
+            {
+               "$ref":"#/definitions/Resource"
+            },
+            {
+               "properties":{
+                  "geographicalGranularity":{
+                     "xml":{
+                        "namespace":"http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"
+                     },
+                     "description":"",
+                     "$ref":"#/definitions/ItemResource"
+                  },
+                  "renderingColor":{
+                     "xml":{
+                        "namespace":"http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"
+                     },
+                     "description":"",
+                     "type":"string"
                   }
                }
             }

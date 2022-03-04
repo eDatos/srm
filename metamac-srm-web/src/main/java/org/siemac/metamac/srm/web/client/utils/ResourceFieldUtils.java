@@ -2,6 +2,9 @@ package org.siemac.metamac.srm.web.client.utils;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ListGridFieldType;
+import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.model.ds.VersionableResourceDS;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
@@ -27,7 +30,8 @@ public class ResourceFieldUtils {
     //
 
     public static CustomListGridField[] getCategorySchemeListGridFields() {
-        return getVersionableResourceListGridFields();
+        CustomListGridField streamStatus = getCustomIconListGridField(CategorySchemeDS.PUBLICATION_STREAM_STATUS, getConstants().categorySchemeStreamMessageStatus());
+        return ListGridUtils.addFields(getVersionableResourceListGridFields(), streamStatus);
     }
 
     public static CustomListGridField[] getCategoryListGridFields() {
@@ -46,7 +50,9 @@ public class ResourceFieldUtils {
         CustomListGridField typeField = new CustomListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
         typeField.setHidden(true);
 
-        return ListGridUtils.addFields(getVersionableResourceListGridFields(), typeField);
+        CustomListGridField streamStatus = getCustomIconListGridField(OrganisationSchemeDS.PUBLICATION_STREAM_STATUS, getConstants().organisationSchemeStreamMessageStatus());
+
+        return ListGridUtils.addFields(getVersionableResourceListGridFields(), typeField, streamStatus);
     }
 
     public static CustomListGridField[] getOrganisationListGridFields() {
@@ -71,7 +77,9 @@ public class ResourceFieldUtils {
         CustomLinkListGridField statisticalOperation = new CustomLinkListGridField(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
         statisticalOperation.setHidden(true);
 
-        return ListGridUtils.addFields(getVersionableResourceListGridFields(), typeField, statisticalOperation);
+        CustomListGridField streamStatus = getCustomIconListGridField(ConceptSchemeDS.PUBLICATION_STREAM_STATUS, getConstants().conceptSchemeStreamMessageStatus());
+
+        return ListGridUtils.addFields(getVersionableResourceListGridFields(), typeField, statisticalOperation, streamStatus);
     }
 
     public static CustomListGridField[] getConceptListGridFields() {
@@ -107,7 +115,9 @@ public class ResourceFieldUtils {
         CustomLinkListGridField variable = new CustomLinkListGridField(CodelistDS.VARIABLE, getConstants().variable());
         variable.setHidden(true);
 
-        return ListGridUtils.addFields(getVersionableResourceListGridFields(), isRecommended, variable);
+        CustomListGridField streamStatus = getCustomIconListGridField(CodelistDS.PUBLICATION_STREAM_STATUS, getConstants().codelistStreamMessageStatus());
+
+        return ListGridUtils.addFields(getVersionableResourceListGridFields(), isRecommended, variable, streamStatus);
     }
 
     public static CustomListGridField[] getCodeListGridFields() {
@@ -124,7 +134,8 @@ public class ResourceFieldUtils {
 
     public static CustomListGridField[] getDsdListGridFields() {
         CustomLinkListGridField statisticalOperation = new CustomLinkListGridField(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
-        return ListGridUtils.addFields(getVersionableResourceListGridFields(), statisticalOperation);
+        CustomListGridField streamStatus = getCustomIconListGridField(DataStructureDefinitionDS.PUBLICATION_STREAM_STATUS, getConstants().dsdStreamMessageStatus());
+        return ListGridUtils.addFields(getVersionableResourceListGridFields(), statisticalOperation, streamStatus);
     }
 
     //
@@ -202,5 +213,12 @@ public class ResourceFieldUtils {
         DetailViewerField creationDate = new DetailViewerField(ItemDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
 
         return new DetailViewerField[]{code, urn, name, description, creationDate};
+    }
+
+    private static CustomListGridField getCustomIconListGridField(String name, String title) {
+        CustomListGridField customIconListGridField = new CustomListGridField(name, title);
+        customIconListGridField.setType(ListGridFieldType.IMAGE);
+        customIconListGridField.setAlign(Alignment.CENTER);
+        return customIconListGridField;
     }
 }

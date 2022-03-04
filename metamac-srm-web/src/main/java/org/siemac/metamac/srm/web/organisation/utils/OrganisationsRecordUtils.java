@@ -20,6 +20,7 @@ public class OrganisationsRecordUtils extends org.siemac.metamac.srm.web.client.
         record = (OrganisationSchemeRecord) getItemSchemeRecord(record, organisationSchemeDto, organisationSchemeDto.getLifeCycle());
         record.setType(CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
         record.setOrganisationSchemeBasicDto(organisationSchemeDto);
+        record.setStreamMessageStatus(organisationSchemeDto.getStreamMessageStatus());
         return record;
     }
 

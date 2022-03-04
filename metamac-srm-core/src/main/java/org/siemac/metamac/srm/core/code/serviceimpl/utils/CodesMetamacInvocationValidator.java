@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.siemac.edatos.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
@@ -715,6 +717,11 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             } else {
                 // tested in service
             }
+        }
+
+        // Check that the rendering value is correct
+        if ((StringUtils.isNotBlank(variableElement.getRenderingColor())) && (!CoreCommonUtil.matchHexColor(variableElement.getRenderingColor()))) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_RENDERING_COLOR_NOT_VALID, variableElement.getRenderingColor()));
         }
     }
 

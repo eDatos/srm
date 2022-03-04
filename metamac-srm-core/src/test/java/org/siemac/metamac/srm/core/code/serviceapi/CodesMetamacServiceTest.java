@@ -6382,6 +6382,103 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testCreateOrUpVariableElementRenderingColor() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String renderingColor = "#FFFFFF";
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+        variableElement.setRenderingColor(renderingColor);
+
+        // Create
+        VariableElement variableElementCreated = codesService.createVariableElement(ctx, variableElement);
+        String urn = variableElementCreated.getIdentifiableArtefact().getUrn();
+
+        // Validate
+        assertNotNull(urn);
+        VariableElement variableElementRetrieved = codesService.retrieveVariableElementByUrn(ctx, urn);
+        assertEquals(renderingColor, variableElementRetrieved.getRenderingColor());
+
+        renderingColor = "#AAA";
+        variableElementRetrieved.setRenderingColor(renderingColor);
+        variableElementRetrieved.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        // Update
+        VariableElement variableElementUpdated = codesService.updateVariableElement(ctx, variableElementRetrieved);
+
+        // Validate
+        assertEquals(renderingColor, variableElementUpdated.getRenderingColor());
+
+        renderingColor = null;
+        variableElementRetrieved.setRenderingColor(renderingColor);
+        variableElementRetrieved.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        // Update
+        variableElementUpdated = codesService.updateVariableElement(ctx, variableElementRetrieved);
+
+        // Validate
+        assertEquals(renderingColor, variableElementUpdated.getRenderingColor());
+
+        renderingColor = "";
+        variableElementRetrieved.setRenderingColor(renderingColor);
+        variableElementRetrieved.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        // Update
+        variableElementUpdated = codesService.updateVariableElement(ctx, variableElementRetrieved);
+
+        // Validate
+        assertEquals(renderingColor, variableElementUpdated.getRenderingColor());
+    }
+
+    @Test
+    public void testVariableElementErrorRenderingColor() throws Exception {
+
+        {
+            String renderingColor = "TEST!";
+            Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+            VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+            variableElement.setRenderingColor(renderingColor);
+            try {
+                codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+                fail("duplicated code");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_RENDERING_COLOR_NOT_VALID, 1, new String[]{renderingColor}, e.getExceptionItems().get(0));
+            }
+        }
+
+        {
+            String renderingColor = "#ABCDEFG";
+            Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+            VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+            variableElement.setRenderingColor(renderingColor);
+            try {
+                codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+                fail("duplicated code");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_RENDERING_COLOR_NOT_VALID, 1, new String[]{renderingColor}, e.getExceptionItems().get(0));
+            }
+        }
+
+        {
+            String renderingColor = "#12345";
+            Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+            VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+            variableElement.setRenderingColor(renderingColor);
+            try {
+                codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+                fail("duplicated code");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_RENDERING_COLOR_NOT_VALID, 1, new String[]{renderingColor}, e.getExceptionItems().get(0));
+            }
+        }
+
+    }
+
+    @Test
     public void testCreateVariableElementErrorVariableWorld() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_7_WORLD);
         assertTrue(VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()));
@@ -9327,12 +9424,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         Iterator<String> iterator = lines.iterator();
 
-        assertEquals("code\tgeographical_granularity\tshort_name#es\tshort_name#pt\tshort_name#en\tshort_name#ca", iterator.next());
+        assertEquals("code\tgeographical_granularity\tshort_name#es\tshort_name#pt\tshort_name#en\tshort_name#ca\trendering_color", iterator.next());
 
-        assertTrue(lines.contains("VARIABLE_ELEMENT_04\tCODE02\tnombre\t\t\t"));
-        assertTrue(lines.contains("VARIABLE_ELEMENT_01\tCODE01\tNombre corto 5-1\t\tShort name 5-1\t"));
-        assertTrue(lines.contains("VARIABLE_ELEMENT_02\tCODE01\ttítulo ve-5-2\t\t\t"));
-        assertTrue(lines.contains("VARIABLE_ELEMENT_03\tCODE01\ttítulo ve5-3\t\tshort name ve5-3\t"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_04\tCODE02\tnombre\t\t\t\t#ABCDEF"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_01\tCODE01\tNombre corto 5-1\t\tShort name 5-1\t\t#FFFFFF"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_02\tCODE01\ttítulo ve-5-2\t\t\t\t"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_03\tCODE01\ttítulo ve5-3\t\tshort name ve5-3\t\t"));
         bufferedReader.close();
     }
 
@@ -9355,6 +9452,82 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate variable elements
         {
+            // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1;#123456
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement1");
+            assertEquals("variableElement1", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
+            assertEquals(null, variableElement.getValidFrom());
+            assertEquals(null, variableElement.getValidTo());
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#123456", variableElement.getRenderingColor());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
+        }
+        {
+            // variableElement2;Nombre corto 2;;Nombre corto it 2;;
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement2");
+            assertEquals("variableElement2", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2", "it", "Nombre corto it 2");
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
+        }
+        {
+            // variableElement3;Nombre corto 3;Short name 3;;#AAAAAA
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement3");
+            assertEquals("variableElement3", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#AAAAAA", variableElement.getRenderingColor());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
+        }
+        {
+            // variableElement4;Nombre corto 4;Short name 4;Nombre corto it 4;
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement4");
+            assertEquals("variableElement4", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
+        }
+        {
+            // variableElement5;;;Nombre corto it 5;#FEDCBA
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement5");
+            assertEquals("variableElement5", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#FEDCBA", variableElement.getRenderingColor());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
+        }
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportVariableElementsTsvWithoutRenderingColor() throws Exception {
+
+        String variableUrn = VARIABLE_2;
+        String fileName = "importation-variable-element-07-without_rendering_color.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+
+        // Validate
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
+
+        // Validate variable elements
+        {
             // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement1");
@@ -9364,6 +9537,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(null, variableElement.getValidFrom());
             assertEquals(null, variableElement.getValidTo());
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
         {
@@ -9374,16 +9548,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2", "it", "Nombre corto it 2");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
         {
-            // variableElement3;Nombre corto 3;;
+            // variableElement3;Nombre corto 3;Short name 3;;
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement3");
             assertEquals("variableElement3", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
         {
@@ -9394,6 +9570,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
         {
@@ -9404,6 +9581,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
     }
@@ -9470,6 +9648,92 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     @DirtyDatabase
+    public void testImportVariableElementsTsvUpdatingAlreadyExistingCodesWithoutRenderingColor() throws Exception {
+
+        final boolean updateAlreadyExisting = true;
+
+        // Import
+        final String variableUrn = VARIABLE_2;
+        final String fileName = "importation-variable-element-08-without_rendering_color.tsv";
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+
+        TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+
+        // Validate
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(2, taskImportTsvInfo.getInformationItems().size());
+        int i = 0;
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_02"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_04"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEquals(taskImportTsvInfo.getInformationItems().size(), i);
+
+        // Validate variable elements
+        {
+            // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1;#AAAAAA
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement1");
+            assertEquals("variableElement1", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
+            assertEquals(null, variableElement.getValidFrom());
+            assertEquals(null, variableElement.getValidTo());
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
+        }
+        {
+            // VARIABLE_ELEMENT_02;Nombre corto 2;;Nombre corto it 2;#BBBBBB
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02");
+            assertEquals("VARIABLE_ELEMENT_02", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2", "it", "Nombre corto it 2");
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#222222", variableElement.getRenderingColor());
+            assertEquals(Long.valueOf(22), variableElement.getId());
+            BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), variableElement.getCreatedDate());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getLastUpdated()); // today
+        }
+        {
+            // variableElement3;Nombre corto 3;Short name 3;;#CCCCCC
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement3");
+            assertEquals("variableElement3", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
+        }
+        {
+            // VARIABLE_ELEMENT_04;Nombre corto 4;Short name 4;Nombre corto it 4;#DDDDDD
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04");
+            assertEquals("VARIABLE_ELEMENT_04", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#444444", variableElement.getRenderingColor());
+            assertEquals(Long.valueOf(24), variableElement.getId());
+            BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), variableElement.getCreatedDate());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getLastUpdated()); // today
+        }
+        {
+            // variableElement5;;;Nombre corto it 5;#EEEEEE
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement5");
+            assertEquals("variableElement5", variableElement.getIdentifiableArtefact().getCode());
+            assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
+            assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals(null, variableElement.getRenderingColor());
+            BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
+        }
+    }
+
+    @Test
+    @DirtyDatabase
     public void testImportVariableElementsTsvUpdatingAlreadyExistingCodes() throws Exception {
 
         final boolean updateAlreadyExisting = true;
@@ -9492,7 +9756,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate variable elements
         {
-            // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1
+            // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1;#AAAAAA
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement1");
             assertEquals("variableElement1", variableElement.getIdentifiableArtefact().getCode());
@@ -9501,50 +9765,55 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(null, variableElement.getValidFrom());
             assertEquals(null, variableElement.getValidTo());
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#AAAAAA", variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
         {
-            // VARIABLE_ELEMENT_02;Nombre corto 2;;Nombre corto it 2
+            // VARIABLE_ELEMENT_02;Nombre corto 2;;Nombre corto it 2;#BBBBBB
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02");
             assertEquals("VARIABLE_ELEMENT_02", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2", "it", "Nombre corto it 2");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#BBBBBB", variableElement.getRenderingColor());
             assertEquals(Long.valueOf(22), variableElement.getId());
             BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), variableElement.getCreatedDate());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getLastUpdated()); // today
         }
         {
-            // variableElement3;Nombre corto 3;;
+            // variableElement3;Nombre corto 3;Short name 3;;#CCCCCC
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement3");
             assertEquals("variableElement3", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#CCCCCC", variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
         {
-            // VARIABLE_ELEMENT_04;Nombre corto 4;Short name 4;Nombre corto it 4
+            // VARIABLE_ELEMENT_04;Nombre corto 4;Short name 4;Nombre corto it 4;#DDDDDD
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04");
             assertEquals("VARIABLE_ELEMENT_04", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#DDDDDD", variableElement.getRenderingColor());
             assertEquals(Long.valueOf(24), variableElement.getId());
             BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), variableElement.getCreatedDate());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getLastUpdated()); // today
         }
         {
-            // variableElement5;;;Nombre corto it 5
+            // variableElement5;;;Nombre corto it 5;#EEEEEE
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement5");
             assertEquals("variableElement5", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#EEEEEE", variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
     }
@@ -9575,7 +9844,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate variable elements
         {
-            // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1
+            // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1;#AAAAAA
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement1");
             assertEquals("variableElement1", variableElement.getIdentifiableArtefact().getCode());
@@ -9584,50 +9853,55 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(null, variableElement.getValidFrom());
             assertEquals(null, variableElement.getValidTo());
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#AAAAAA", variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
         {
-            // VARIABLE_ELEMENT_02;Nombre corto 2;;Nombre corto it 2
+            // VARIABLE_ELEMENT_02;Nombre corto 2;;Nombre corto it 2;#BBBBBB
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02");
             assertEquals("VARIABLE_ELEMENT_02", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Fuerteventura", "en", "Short name variableElement 2-2");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#222222", variableElement.getRenderingColor());
             assertEquals(Long.valueOf(22), variableElement.getId());
             BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), variableElement.getCreatedDate());
             BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), variableElement.getLastUpdated());
         }
         {
-            // variableElement3;Nombre corto 3;;
+            // variableElement3;Nombre corto 3;Short name 3;;#CCCCCC
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement3");
             assertEquals("variableElement3", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#CCCCCC", variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
         {
-            // VARIABLE_ELEMENT_04;Nombre corto 4;Short name 4;Nombre corto it 4
+            // VARIABLE_ELEMENT_04;Nombre corto 4;Short name 4;Nombre corto it 4;#DDDDDD
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04");
             assertEquals("VARIABLE_ELEMENT_04", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "en", "short name v2-4", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#444444", variableElement.getRenderingColor());
             assertEquals(Long.valueOf(24), variableElement.getId());
             BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), variableElement.getCreatedDate());
             BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), variableElement.getLastUpdated());
         }
         {
-            // variableElement5;;;Nombre corto it 5
+            // variableElement5;;;Nombre corto it 5;#EEEEEE
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement5");
             assertEquals("variableElement5", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
             assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+            assertEquals("#EEEEEE", variableElement.getRenderingColor());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
         }
     }

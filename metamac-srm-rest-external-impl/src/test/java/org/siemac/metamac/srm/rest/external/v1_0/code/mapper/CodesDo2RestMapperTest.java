@@ -33,6 +33,8 @@ import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -534,6 +536,7 @@ public class CodesDo2RestMapperTest {
         String orderBy = ORDER_BY_ID_DESC;
         Integer limit = Integer.valueOf(4);
         Integer offset = Integer.valueOf(4);
+        Set<String> fields = null;
 
         List<org.siemac.metamac.srm.core.code.domain.VariableElement> source = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableElement>();
         source.add(mockVariableElement("variableElement1"));
@@ -546,7 +549,7 @@ public class CodesDo2RestMapperTest {
                 totalRows, 0);
 
         // Transform
-        VariableElements target = do2RestInternalMapper.toVariableElements(sources, "variable01", query, orderBy, limit);
+        VariableElements target = do2RestInternalMapper.toVariableElements(sources, "variable01", query, orderBy, limit, fields);
 
         // Validate
         assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, target.getKind());
@@ -566,6 +569,50 @@ public class CodesDo2RestMapperTest {
         assertEquals(source.size(), target.getVariableElements().size());
         for (int i = 0; i < source.size(); i++) {
             assertEqualsResource(source.get(i), target.getVariableElements().get(i));
+            assertEquals(null, target.getVariableElements().get(i).getRenderingColor());
+        }
+    }
+
+    @Test
+    public void testToVariableElementsWithFields() {
+        String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
+        String orderBy = ORDER_BY_ID_DESC;
+        Integer limit = Integer.valueOf(4);
+        Integer offset = Integer.valueOf(4);
+        Set<String> fields = new HashSet<>(Arrays.asList("+renderingColor"));
+
+        List<org.siemac.metamac.srm.core.code.domain.VariableElement> source = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableElement>();
+        source.add(mockVariableElement("variableElement1"));
+        source.add(mockVariableElement("variableElement2"));
+        source.add(mockVariableElement("variableElement3"));
+        source.add(mockVariableElement("variableElement4"));
+
+        Integer totalRows = source.size() * 5;
+        PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources = new PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement>(source, offset, source.size(), limit,
+                totalRows, 0);
+
+        // Transform
+        VariableElements target = do2RestInternalMapper.toVariableElements(sources, "variable01", query, orderBy, limit, fields);
+
+        // Validate
+        assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, target.getKind());
+
+        String baseLink = "http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements?query=" + query + "&orderBy=" + orderBy;
+
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=16", target.getLastLink());
+
+        assertEquals(limit.intValue(), target.getLimit().intValue());
+        assertEquals(offset.intValue(), target.getOffset().intValue());
+        assertEquals(totalRows.intValue(), target.getTotal().intValue());
+
+        assertEquals(source.size(), target.getVariableElements().size());
+        for (int i = 0; i < source.size(); i++) {
+            assertEqualsResource(source.get(i), target.getVariableElements().get(i));
+            assertEquals("#FFAA55", target.getVariableElements().get(i).getRenderingColor());
         }
     }
 
@@ -659,8 +706,8 @@ public class CodesDo2RestMapperTest {
         assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, target.getReplaceTo().getKind());
         assertEquals(BigInteger.valueOf(2), target.getReplaceTo().getTotal());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElementReplaceTo1", target.getReplaceTo().getReplaceTos().get(0).getUrn());
-        assertEquals("http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElementReplaceTo1", target.getReplaceTo().getReplaceTos().get(0).getSelfLink()
-                .getHref());
+        assertEquals("http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElementReplaceTo1",
+                target.getReplaceTo().getReplaceTos().get(0).getSelfLink().getHref());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElementReplaceTo2", target.getReplaceTo().getReplaceTos().get(1).getUrn());
 
         assertEquals(SrmRestConstants.KIND_VARIABLE, target.getVariable().getKind());
@@ -673,6 +720,8 @@ public class CodesDo2RestMapperTest {
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(null, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/geoinfo", target.getChildLinks().getChildLinks().get(0).getHref());
+
+        assertEquals("#FFAA55", target.getRenderingColor());
     }
 
     @Test

@@ -1027,8 +1027,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public VariableElements findVariableElements(String variableID, String query, String orderBy, String limit, String offset) {
+    public VariableElements findVariableElements(String variableID, String query, String orderBy, String limit, String offset, String fields) {
         try {
+            Set<String> fieldsToShow = SrmRestInternalUtils.parseFieldsParameter(fields);
+
             // Retrieve by criteria
             SculptorCriteria sculptorCriteria = codesRest2DoMapper.getVariableElementCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
@@ -1038,7 +1040,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                         sculptorCriteria.getPagingParameter());
 
                 // Transform
-                return codesDo2RestMapper.toVariableElements(entitiesPagedResult, variableID, query, orderBy, sculptorCriteria.getLimit());
+                return codesDo2RestMapper.toVariableElements(entitiesPagedResult, variableID, query, orderBy, sculptorCriteria.getLimit(), fieldsToShow);
             } else {
                 // Retrieve all variable elements of variable, without pagination
                 String variableUrn = GeneratorUrnUtils.generateVariableUrn(variableID);
@@ -1054,7 +1056,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 List<VariableElementResult> entities = codesService.findVariableElementsByVariableEfficiently(ctx, variableUrn, variableElementsCodes, selection, geographicalGranularityUrns);
 
                 // Transform
-                return codesDo2RestMapper.toVariableElements(entities, variableID, query);
+                return codesDo2RestMapper.toVariableElements(entities, variableID, query, fieldsToShow);
             }
         } catch (Exception e) {
             throw manageException(e);

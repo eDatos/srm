@@ -35,8 +35,7 @@ public class SrmRestInternalUtils {
     }
 
     @SuppressWarnings({"rawtypes"})
-    public static List<ConditionalCriteria> buildConditionalCriteriaItemSchemes(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
-            {
+    public static List<ConditionalCriteria> buildConditionalCriteriaItemSchemes(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity) {
         return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, ItemSchemeVersionProperties.maintainableArtefact());
     }
 
@@ -49,8 +48,7 @@ public class SrmRestInternalUtils {
     }
 
     @SuppressWarnings({"rawtypes"})
-    public static List<ConditionalCriteria> buildConditionalCriteriaStructures(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
-            {
+    public static List<ConditionalCriteria> buildConditionalCriteriaStructures(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity) {
         return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, StructureVersionProperties.maintainableArtefact());
     }
 
@@ -122,8 +120,7 @@ public class SrmRestInternalUtils {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static List<ConditionalCriteria> buildConditionalCriteriaNameableArtefacts(String agencyID, String resourceID, String version, String itemID,
-            List<ConditionalCriteria> conditionalCriteriaQuery, Class entity, MaintainableArtefactProperty maintainableArtefactProperty, NameableArtefactProperty nameableArtefactProperty)
-            {
+            List<ConditionalCriteria> conditionalCriteriaQuery, Class entity, MaintainableArtefactProperty maintainableArtefactProperty, NameableArtefactProperty nameableArtefactProperty) {
 
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
@@ -215,6 +212,7 @@ public class SrmRestInternalUtils {
             validFields.add(SrmRestConstants.FIELD_INCLUDE_ORDER);
             validFields.add(SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT);
             validFields.add(SrmRestConstants.FIELD_INCLUDE_DESCRIPTION);
+            validFields.add(SrmRestConstants.FIELD_INCLUDE_RENDERING_COLOR);
             List<String> fieldList = Arrays.asList(fieldsParam.split(","));
             List<String> parsedFieldList = new ArrayList<>();
             for (String field : fieldList) {

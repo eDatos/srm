@@ -2696,6 +2696,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (exceptionItems.size() != 0) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(exceptionItems).build();
         }
+
     }
 
     private void checkVariableElementGeographicalGranularity(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
@@ -3353,6 +3354,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED, variableElement.getIdentifiableArtefact().getCode(),
                             ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_GEOGRAPHICAL_GRANULARITY));
                 }
+            }
+        }
+
+        // rendering color
+        if (header.isRenderingColorSetted()) {
+            String renderingColor = columns[header.getRenderingColorPosition()];
+            if (!StringUtils.isBlank(renderingColor)) {
+                variableElement.setRenderingColor(renderingColor);
+            } else {
+                variableElement.setRenderingColor(null);
             }
         }
 

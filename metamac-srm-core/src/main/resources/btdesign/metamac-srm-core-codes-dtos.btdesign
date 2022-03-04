@@ -44,6 +44,7 @@ Application DtosMetamacCodeDomain {
 		DataTransferObject CodelistMetamacBasicDto extends @ItemSchemeMetamacBasicDto {
 			Boolean isRecommended;
 			- @RelatedResourceDto variable;
+            - @StreamMessageStatusEnum streamMessageStatus;
 		}		
 
 		"Dto for CodeMetamac"
@@ -124,6 +125,7 @@ Application DtosMetamacCodeDomain {
 			- List<@RelatedResourceDto> replaceToVariableElements nullable;
 			"Variable"
 			- @VariableRelatedResourceDto variable not nullable;
+			String renderingColor nullable;
 			Double latitude nullable;
 			Double longitude nullable;
 			String shapeWkt nullable;

@@ -11,6 +11,8 @@ public class VariableElementDS extends DataSource {
     public static final String URN                      = "ele-urn";
     // Content descriptors
     public static final String VARIABLE                 = "ele-variable";
+
+    public static final String RENDERING_COLOR          = "ele-rendering-color";
     public static final String IS_GEOGRAPHICAL          = "ele-var-type";
     // Geographical information
     public static final String GEOGRAPHICAL_GRANULARITY = "ele-geo-gran";

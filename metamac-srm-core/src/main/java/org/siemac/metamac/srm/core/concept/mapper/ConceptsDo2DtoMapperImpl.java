@@ -55,6 +55,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
         itemSchemeVersionDoToItemSchemeBasicDto(source, source.getLifeCycleMetadata(), target);
         target.setType(source.getType());
         target.setRelatedOperation(externalItemStatisticalOperationsToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
+        target.setStreamMessageStatus(source.getStreamMessageStatus());
         return target;
     }
 

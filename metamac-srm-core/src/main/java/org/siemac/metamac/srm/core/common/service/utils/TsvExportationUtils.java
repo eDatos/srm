@@ -313,6 +313,7 @@ public class TsvExportationUtils {
                 writeVariableElementCode(writer, variableElementResult);
                 writeVariableElementGeographicalGranularity(writer, variableElementResult);
                 writeVariableElementShortName(writer, variableElementResult, languages);
+                writeVariableElementRenderingColor(writer, variableElementResult);
             }
             writer.flush();
             return file.getName();
@@ -332,6 +333,8 @@ public class TsvExportationUtils {
             writer.write(SrmConstants.TSV_SEPARATOR);
             writer.write(SrmConstants.TSV_HEADER_SHORT_NAME + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
         }
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        writer.write(SrmConstants.TSV_HEADER_RENDERING_COLOR);
     }
 
     // ---------------------------------------------------------------------------------------------------------------
@@ -548,6 +551,14 @@ public class TsvExportationUtils {
             if (nameInLocale != null) {
                 writer.write(nameInLocale);
             }
+        }
+    }
+
+    private static void writeVariableElementRenderingColor(OutputStreamWriter writer, VariableElementResult variableElementResult) throws IOException {
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        String renderingColor = variableElementResult.getRenderingColor();
+        if (renderingColor != null) {
+            writer.write(renderingColor);
         }
     }
 }

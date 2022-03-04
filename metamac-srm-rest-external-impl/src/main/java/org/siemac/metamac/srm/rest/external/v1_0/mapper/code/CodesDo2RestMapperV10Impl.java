@@ -214,22 +214,20 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         CodeResource target = new CodeResource();
         toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), target, fields);
-        
+
         setVisibleFields(source, target, fields);
-        
+
         return target;
     }
-    
-    
+
     private void setVisibleFields(CodeMetamac source, CodeResource target, Set<String> fields) {
         if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
             target.setVariableElement(toResource(source.getVariableElement()));
         }
-        
+
         target.setOpen(null);
         target.setOrder(null);
     }
-    
 
     private CodeResource toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion, String variableID, Set<String> fields) {
         if (source == null) {
@@ -355,7 +353,8 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
-    public VariableElements toVariableElements(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, String variableID, String query, String orderBy, Integer limit) {
+    public VariableElements toVariableElements(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, String variableID, String query, String orderBy, Integer limit,
+            Set<String> fields) {
 
         VariableElements targets = new VariableElements();
         targets.setKind(SrmRestConstants.KIND_VARIABLE_ELEMENTS);
@@ -366,14 +365,14 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (org.siemac.metamac.srm.core.code.domain.VariableElement source : sources.getValues()) {
-            VariableElementResource target = toResource(source);
+            VariableElementResource target = toResource(source, fields);
             targets.getVariableElements().add(target);
         }
         return targets;
     }
 
     @Override
-    public VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query) {
+    public VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query, Set<String> fields) {
         VariableElements targets = new VariableElements();
         targets.setKind(SrmRestConstants.KIND_VARIABLE_ELEMENTS);
 
@@ -383,7 +382,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (org.siemac.metamac.srm.core.code.domain.VariableElementResult source : sources) {
-            VariableElementResource target = toResource(variableID, source);
+            VariableElementResource target = toResource(variableID, source, fields);
             targets.getVariableElements().add(target);
         }
         return targets;
@@ -427,6 +426,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setReplacedBy(toResource(source.getReplacedByVariableElement()));
         target.setReplaceTo(toVariableElementReplaceTo(source));
         target.setVariable(toResource(source.getVariable()));
+        target.setRenderingColor(source.getRenderingColor());
         return target;
     }
 
@@ -476,12 +476,20 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     private VariableElementResource toResource(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
+        return toResource(source, null);
+    }
+
+    private VariableElementResource toResource(org.siemac.metamac.srm.core.code.domain.VariableElement source, Set<String> fields) {
         if (source == null) {
             return null;
         }
         VariableElementResource target = new VariableElementResource();
         toResource(source.getIdentifiableArtefact(), SrmRestConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(source), target, false);
         target.setName(toInternationalString(source.getShortName()));
+
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_RENDERING_COLOR)) {
+            target.setRenderingColor(source.getRenderingColor());
+        }
 
         if (source.getGeographicalGranularity() != null) {
             target.setGeographicalGranularity(toResource(source.getGeographicalGranularity()));
@@ -490,12 +498,20 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     private VariableElementResource toResource(String variableID, org.siemac.metamac.srm.core.code.domain.VariableElementResult source) {
+        return toResource(variableID, source, null);
+    }
+
+    private VariableElementResource toResource(String variableID, org.siemac.metamac.srm.core.code.domain.VariableElementResult source, Set<String> fields) {
         if (source == null) {
             return null;
         }
         VariableElementResource target = new VariableElementResource();
         toResource(source, SrmRestConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(variableID, source), target, false);
         target.setName(toInternationalString(source.getShortName()));
+
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_RENDERING_COLOR)) {
+            target.setRenderingColor(source.getRenderingColor());
+        }
 
         if (source.getGeographicalGranularity() != null) {
             ItemResource resource = toResource(source.getGeographicalGranularity());

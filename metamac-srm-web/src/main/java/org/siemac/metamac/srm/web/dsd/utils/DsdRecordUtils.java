@@ -33,6 +33,7 @@ public class DsdRecordUtils extends org.siemac.metamac.srm.web.client.utils.Reco
         record = (DsdRecord) getStructureRecord(record, dsd, dsd.getLifeCycle());
         record.setStatisticalOperation(dsd.getStatisticalOperation());
         record.setDsdBasicDto(dsd);
+        record.setStreamMessageStatus(dsd.getStreamMessageStatus());
         return record;
     }
 
